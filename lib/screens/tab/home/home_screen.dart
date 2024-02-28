@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:homework12/data/models/local/local_database.dart';
 import 'package:homework12/data/models/task_models.dart';
 import 'package:homework12/screens/tab/home/diologs/add_task_diolog.dart';
 import 'package:homework12/utils/color/color.dart';
@@ -20,10 +21,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   TaskModels taskModels=TaskModels.initialVale;
 
+  List<TaskModels> tasks=[];
+
+  _init() async{
+    tasks=await LocalDatabase.getAllTask();
+    setState(() {});
+  }
+
   @override
   void initState() {
-    taskModels.canAddTaskToDatabase();
-
+    _init();
     super.initState();
   }
   @override
@@ -44,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
         centerTitle: true,
       ),
-      body: Center(
+      body: (tasks==[])?Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -57,13 +64,27 @@ class _HomeScreenState extends State<HomeScreen> {
               color: AppColors.white.withOpacity(0.87),fontSize: 16.sp
             ),)
         ],),
-      ),
+      ):ListView(children:List.generate(tasks.length, (index){
+        return Container(
+          height:20,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16.r),
+            color: AppColors.white,
+          ),
+          child: Column(children: [
+            Text(tasks[index].title,style: AppTextStyle.interBold.copyWith(
+              color: AppColors.white,fontSize:20.sp
+            ),),
+          ],),
+        );
+      }),),
       floatingActionButton:FloatingActionButton(
         backgroundColor: AppColors.blue,
-
         onPressed: () {
-          addTaskDialog(context: context, taskModelChanged:(task){
-            taskModels=task;
+          addTaskDialog(context: context,
+              taskModelChanged:(task) async {
+            await LocalDatabase.insertTask(taskModels);
+            _init();
           });
         },
         child:const Icon(Icons.add,color: AppColors.white,),
@@ -71,47 +92,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-//AlertDialog(
-//               contentPadding: EdgeInsets.zero,
-//               content: Container(
-//                 margin: EdgeInsets.zero,
-//                 width:MediaQuery.of(context).size.width,
-//                 padding: EdgeInsets.symmetric(horizontal: 25.w,vertical: 25.h),
-//                 decoration: BoxDecoration(
-//                     borderRadius: BorderRadius.circular(20.r),
-//                     color: AppColors.c_363636
-//                 ),
-//                 child: Column(
-//                   mainAxisSize: MainAxisSize.min,
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     SizedBox(
-//                       width:200.sp,
-//                       child: Text('Add Task',style: AppTextStyle.interBold.copyWith(
-//                           color: AppColors.white,fontSize:20.sp
-//                       ),),
-//                     ),
-//                     SizedBox(height:20.h,),
-//                     const TaskTextFieldWidget(title:'Write task'),
-//                     SizedBox(height: 20.h,),
-//                     const TaskTextFieldWidget(title:'Description'),
-//
-//                     SizedBox(height:25.h,),
-//                     Row(children: [
-//                       IconButton(onPressed:(){
-//                         showDialog(context: context, builder:(BuildContext context){
-//                           return const AlertDialog(
-//                           title: Text('adsf'),
-//                             backgroundColor: AppColors.white,
-//                           );
-//                         });
-//                       }, icon:SvgPicture.asset(AppImages.watch,width: 24.w,height: 24.h,)),
-//                       IconButton(onPressed:(){}, icon:SvgPicture.asset(AppImages.tag,width: 24.w,height: 24.h)),
-//                       IconButton(onPressed:(){}, icon:SvgPicture.asset(AppImages.flag,width: 24.w,height: 24.h)),
-//                       const Spacer(),
-//                       IconButton(onPressed:(){}, icon:SvgPicture.asset(AppImages.send,width: 24.w,height: 24.h)),
-//                     ],)
-//                   ],
-//                 ),
-//               ),
-//             )

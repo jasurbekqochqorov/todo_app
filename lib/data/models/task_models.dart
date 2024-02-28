@@ -1,3 +1,4 @@
+import 'package:homework12/data/models/task_model_constants.dart';
 import 'package:homework12/data/models/task_status.dart';
 
 class TaskModels {
@@ -41,8 +42,8 @@ class TaskModels {
 
   factory TaskModels.fromJson(Map<String,dynamic> json){
     return TaskModels(
-        title:json['title'] as String? ?? "",
-        description:json['description'] as String? ?? "",
+        title:json[TaskModelConstants.title] as String? ?? "",
+        description:json[TaskModelConstants.description] as String? ?? "",
         category:json['category'] as String? ?? "",
         deadline: DateTime.parse(json['deadline'] as String? ?? ""),
         priority: json['priority'] as int? ?? 1,
@@ -53,12 +54,12 @@ class TaskModels {
 
   Map<String,dynamic> toJson(){
     return {
-      'description':description,
-      'title':title,
-      'status':status.name,
-      'category':category,
-      'deadline':deadline.toString(),
-      'priority':priority,
+      TaskModelConstants.description:description,
+      TaskModelConstants.title:title,
+      TaskModelConstants.status:status.name,
+      TaskModelConstants.category:category,
+      TaskModelConstants.deadline:deadline.toString(),
+      TaskModelConstants.priority:priority,
     };
   }
 

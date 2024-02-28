@@ -55,7 +55,7 @@ class PageItem extends StatelessWidget {
             maxLines: 3,
             textAlign: TextAlign.center,
             style: AppTextStyle.interRegular.copyWith(
-              fontSize: 16,
+              fontSize: 16.sp,
               color: AppColors.white.withOpacity(0.87),
             ),
           ),

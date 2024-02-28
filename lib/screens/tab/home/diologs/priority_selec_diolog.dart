@@ -26,7 +26,7 @@ showPrioritySelectDialog({
     return StatefulBuilder(builder: (context,setState){
       return Container(
         width: MediaQuery.of(context).size.width,
-        margin: EdgeInsets.symmetric(vertical:height*0.20),
+        margin: EdgeInsets.symmetric(vertical:height*0.13),
         color: AppColors.c_363636,
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -41,7 +41,7 @@ showPrioritySelectDialog({
             ),
             SizedBox(height: 22.h,),
             SizedBox(
-              height:height*0.4,
+              height:height*0.5,
               child: GridView.count(crossAxisCount: 4,
                 children: [
                   ...List.generate(10, (index){

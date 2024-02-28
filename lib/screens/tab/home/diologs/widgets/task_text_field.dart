@@ -19,6 +19,7 @@ class _TaskTextFieldWidgetState extends State<TaskTextFieldWidget> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      maxLines: null,
       controller: widget.controller,
       focusNode: widget.focusNode,
       onChanged: widget.onChanged,

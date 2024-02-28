@@ -1,9 +1,6 @@
 
 
 
-
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,7 +39,7 @@ showCategorySelectDialog({
     return StatefulBuilder(builder: (context,setState){
       return Container(
         width: MediaQuery.of(context).size.width,
-        margin: EdgeInsets.symmetric(vertical:height*0.15),
+        margin: EdgeInsets.symmetric(vertical:height*0.10),
         color: AppColors.c_363636,
         child: Column(
           mainAxisSize: MainAxisSize.min,
