@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:homework12/data/models/local/local_database.dart';
-import 'package:homework12/data/models/task_models.dart';
+import 'package:homework12/data/models/task/task_models.dart';
 import 'package:homework12/screens/tab/home/diologs/add_task_diolog.dart';
+import 'package:homework12/screens/tab/home/diologs/update_task_diolog.dart';
+import 'package:homework12/screens/tab/home/diologs/widgets/task_item_view.dart';
 import 'package:homework12/utils/color/color.dart';
 import 'package:homework12/utils/fonts/fonts.dart';
 
+import '../../../global/global.dart';
 import '../../../utils/icons/icon.dart';
-
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,12 +21,16 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  TaskModels taskModels=TaskModels.initialVale;
+  TaskModels taskModels=TaskModels.initialValue;
 
   List<TaskModels> tasks=[];
 
   _init() async{
     tasks=await LocalDatabase.getAllTask();
+    setState(() {});
+  }
+  _searchQuery(String q)async{
+    tasks=await LocalDatabase.searchTasks(q);
     setState(() {});
   }
 
@@ -51,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
         centerTitle: true,
       ),
-      body: (tasks==[])?Center(
+      body: (false)?Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -64,31 +70,60 @@ class _HomeScreenState extends State<HomeScreen> {
               color: AppColors.white.withOpacity(0.87),fontSize: 16.sp
             ),)
         ],),
-      ):ListView(children:List.generate(tasks.length, (index){
-        return Container(
-          height:20,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16.r),
-            color: AppColors.white,
-          ),
-          child: Column(children: [
-            Text(tasks[index].title,style: AppTextStyle.interBold.copyWith(
-              color: AppColors.white,fontSize:20.sp
-            ),),
-          ],),
-        );
-      }),),
-      floatingActionButton:FloatingActionButton(
+      ):RefreshIndicator(
+        color: AppColors.white,
         backgroundColor: AppColors.blue,
-        onPressed: () {
-          addTaskDialog(context: context,
-              taskModelChanged:(task) async {
-            await LocalDatabase.insertTask(taskModels);
-            _init();
-          });
-        },
-        child:const Icon(Icons.add,color: AppColors.white,),
+         onRefresh: (){
+          _init();
+          return Future<void>.delayed(const Duration(seconds:2));},
+        child: Column(
+          children: [
+            Padding(
+              padding:EdgeInsets.symmetric(horizontal:24.w,vertical:20.h),
+              child: TextField(
+                onChanged: _searchQuery,
+                style: AppTextStyle.interSemiBold.copyWith(
+                  color:
+                    AppColors.black,fontSize:14.sp
+                ),
+                decoration:InputDecoration(
+                  prefixIcon: const Icon(Icons.search,color: AppColors.c_979797,),
+                  hintText: "Search for your task...",
+                  hintStyle: AppTextStyle.interRegular.copyWith(
+                    color: AppColors.c_AFAFAF,fontSize:16.sp
+                  ),
+                  fillColor: AppColors.c_363636,
+                    filled: true,
+                  contentPadding: EdgeInsets.symmetric(horizontal:13.w,vertical:12.h),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4.r),
+                    borderSide: BorderSide(width:1,color: AppColors.white)
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4.r),
+                      borderSide: BorderSide(width:1,color: AppColors.white)
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: ListView(children:List.generate(tasks.length, (index){
+                return TaskItemView(taskModel: tasks[index],
+                    onDelete: ()async{
+                      int d= await LocalDatabase.deleteTask(tasks[index].id!);
+                      _init();
+                    }, onUpdate:(){
+                      updateTaskDialog(context: context, taskModels:tasks[index], taskModelChanged:(updateTask) async{
+                        await LocalDatabase.updateTask(updateTask.copyWith(id:tasks[index].id),tasks[index].id!,);
+                        _init();
+                      });
+                    });
+              }),),
+            ),
+          ],
+        ),
       ),
+
     );
   }
 }

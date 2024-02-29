@@ -12,12 +12,15 @@ import '../../../../utils/color/color.dart';
 import '../../../../utils/fonts/fonts.dart';
 import '../../../../utils/icons/icon.dart';
 
-addTaskDialog({required BuildContext context,required ValueChanged<TaskModels> taskModelChanged}) {
+updateTaskDialog({
+  required BuildContext context,
+  required TaskModels taskModels,
+  required ValueChanged<TaskModels> taskModelChanged,
+}) {
 
-  final TextEditingController titleController=TextEditingController();
-  final TextEditingController descriptionController=TextEditingController();
+  final TextEditingController titleController=TextEditingController(text: taskModels.title);
+  final TextEditingController descriptionController=TextEditingController(text: taskModels.description);
 
-  TaskModels taskModels=TaskModels.initialValue;
 
   TimeOfDay? timeOfDay;
   DateTime? dateTime;
@@ -53,13 +56,13 @@ addTaskDialog({required BuildContext context,required ValueChanged<TaskModels> t
                   SizedBox(
                     height: 20.h,
                   ),
-                  TaskTextFieldWidget(title:'Write task',focusNode: focusNode1,controller:titleController,onChanged: (v){
+                  TaskTextFieldWidget(title: 'Write task',focusNode: focusNode1,controller:titleController,onChanged: (v){
                     taskModels=taskModels.copyWith(title: v);
                   },),
                   SizedBox(
                     height: 20.h,
                   ),
-                  TaskTextFieldWidget(title:'Description',focusNode: focusNode2,controller: descriptionController,onChanged: (v){
+                  TaskTextFieldWidget(title: 'Description',focusNode: focusNode2,controller: descriptionController,onChanged: (v){
                     taskModels=taskModels.copyWith(description: v);
                   },),
                   SizedBox(
@@ -92,7 +95,7 @@ addTaskDialog({required BuildContext context,required ValueChanged<TaskModels> t
                             });
                             if(timeOfDay!=null){
                               DateTime d=taskModels.deadline;
-                              d=d.copyWith(hour:timeOfDay!.hour,minute: timeOfDay!.minute);
+                              d.copyWith(hour:timeOfDay!.hour,minute: timeOfDay!.minute);
                               setState((){
                                 taskModels=taskModels.copyWith(deadline:d);
                               });

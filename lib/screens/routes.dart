@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:homework12/screens/add_category/add_category.dart';
 import 'package:homework12/screens/on_boarding/on_boarding_screen.dart';
 import 'package:homework12/screens/splash/splash_screen.dart';
 import 'package:homework12/screens/tab/tab_box.dart';
@@ -29,6 +30,11 @@ class AppRoutes {
           return navigate(const TabBox());
         }
 
+      case RouteNames.addCategory:
+        {
+          return navigate(const AddCategoryScreen());
+        }
+
       default:{
           return navigate(const Scaffold(body: Center(child: Text('Bunday screen yoq'),),));
     }
@@ -45,4 +51,5 @@ class RouteNames{
   static const String onBoardingScreen='/first_route';
   static const String welcomeScreen='/second_route';
   static const String tabBox='/third_route';
+  static const String addCategory='/four_route';
 }

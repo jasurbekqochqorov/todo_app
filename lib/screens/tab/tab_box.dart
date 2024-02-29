@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:homework12/screens/tab/profile/profile_screen.dart';
 import 'package:homework12/utils/color/color.dart';
+import '../../data/models/local/local_database.dart';
+import '../../data/models/task/task_models.dart';
 import 'calendar/calendar_screen.dart';
+import 'home/diologs/add_task_diolog.dart';
 import 'home/home_screen.dart';
 
 class TabBox extends StatefulWidget {
@@ -12,9 +15,17 @@ class TabBox extends StatefulWidget {
 }
 
 class _TabBoxState extends State<TabBox> {
+
   List<Widget> screens = [const HomeScreen(), const CalendarScreen(),const ProfileScreen()];
 
   int activeIndex = 0;
+  List<TaskModels> tasks=[];
+
+  _init() async{
+    tasks=await LocalDatabase.getAllTask();
+    screens = [const HomeScreen(), const CalendarScreen(),const ProfileScreen()];
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +57,17 @@ class _TabBoxState extends State<TabBox> {
           )
         ],
       ),
+        floatingActionButton:FloatingActionButton(
+          backgroundColor: AppColors.blue,
+          onPressed: () {
+            addTaskDialog(context: context,
+                taskModelChanged:(task) async {
+                  await LocalDatabase.insertTask(task);
+                  _init();
+                });
+          },
+          child:const Icon(Icons.add,color: AppColors.white,),
+        )
     );
   }
 }
