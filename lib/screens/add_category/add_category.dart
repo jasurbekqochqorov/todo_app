@@ -10,22 +10,28 @@ import 'package:homework12/utils/fonts/fonts.dart';
 
 class AddCategoryScreen extends StatefulWidget {
   const AddCategoryScreen({super.key});
-
   @override
   State<AddCategoryScreen> createState() => _AddCategoryScreenState();
 }
-
 class _AddCategoryScreenState extends State<AddCategoryScreen> {
   CategoryModel categoryModel=CategoryModel.initialValue;
   List<CategoryModel> category=[];
   TextEditingController categoryController=TextEditingController();
   int activeColor=-1;
   int activeIcon=-1;
+  int k=0;
   _init() async{
     category= await LocalDatabase.getAllCategory();
-    print('Category Length:=${category.length}');
     setState(() {});
+    categories.add(category[category.length-1]);
   }
+
+  @override
+  void initState() {
+    _init();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,6 +55,9 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
           ),),
           SizedBox(height:16.h,),
           TextField(
+            style: AppTextStyle.interSemiBold.copyWith(
+              color: AppColors.white,fontSize:15.sp
+            ),
             controller: categoryController,
             onChanged: (v){
               categoryModel=categoryModel.copyWith(title: v);
@@ -78,7 +87,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
-                ...List.generate(categories.length, (index){
+                ...List.generate(cate.length, (index){
                   return TextButton(
                     onPressed: (){
                       activeIcon=index;
@@ -106,7 +115,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [
-              ...List.generate(categories.length, (index){
+              ...List.generate(cate.length, (index){
                 return TextButton(
                   onPressed: (){
                     activeColor=index;
@@ -149,29 +158,32 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                     ),)),
               ),
              SizedBox(width: 20.w,),
-              TextButton(onPressed:()async{
-                await LocalDatabase.insertCategory(categoryModel);
-                _init();
-              }, style: TextButton.styleFrom(
-                      backgroundColor: AppColors.c_8E7CFF,
-                      padding: EdgeInsets.symmetric(vertical:12.h),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4.r)
-                      )
-                  ),
-                  child:Text("Create category",style: AppTextStyle.interRegular.copyWith(
-                      fontSize: 16.sp,color: AppColors.white
-                  ),))
+              Expanded(
+                child: TextButton(onPressed:()async{
+                if(categoryModel.canAddTaskToDatabase()){
+                  await LocalDatabase.insertCategory(categoryModel);
+                  _init();
+                  Navigator.pop(context);
+                }
+                }, style: TextButton.styleFrom(
+                        backgroundColor: AppColors.c_8E7CFF,
+                        padding: EdgeInsets.symmetric(vertical:12.h),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4.r)
+                        )
+                    ),
+                    child:Text("Create category",style: AppTextStyle.interRegular.copyWith(
+                        fontSize: 16.sp,color: AppColors.white
+                    ),)),
+              )
             ],),
           ),
           SizedBox(height:60.h,),
       ],),
     );
 
-
   }
 }
-
 
 extension ColorExtension on String {
   toColor() {

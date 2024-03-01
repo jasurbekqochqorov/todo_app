@@ -7,6 +7,7 @@ class AppImages{
   static String picture3='assets/images/img_2.png';
   static String person='assets/images/img_3.png';
   static String picture='assets/images/img_4.png';
+  static String profile2='assets/images/picture.png';
 
 
   static String check='assets/icons/check.svg';
@@ -25,4 +26,14 @@ class AppImages{
   static String music='assets/icons/music.svg';
   static String social='assets/icons/social.svg';
   static String home='assets/icons/home.svg';
+  static String settings='assets/icons/setting.svg';
+  static String user='assets/icons/person.svg';
+  static String key='assets/icons/key.svg';
+  static String camera='assets/icons/change.svg';
+  static String aboutUs='assets/icons/use.svg';
+  static String faq='assets/icons/faq.svg';
+  static String arrowLeft='assets/icons/left.svg';
+  static String flesh='assets/icons/flesh.svg';
+  static String like='assets/icons/support.svg';
+  static String logOut='assets/icons/log.svg';
 }

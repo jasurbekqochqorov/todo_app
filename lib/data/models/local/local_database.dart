@@ -140,8 +140,7 @@ class LocalDatabase{
 
   static Future<List<CategoryModel>> getAllCategory() async{
     final db=await databaseInstance.database;
-    String orderBy="${CategoryModelConstants.id} DESC";
-    List json=await db.query(CategoryModelConstants.tableName,orderBy: orderBy);
+    List json=await db.query(CategoryModelConstants.tableName);
     return json.map((e) => CategoryModel.fromJson(e)).toList();
   }
 

@@ -13,7 +13,6 @@ extension Size on int {
   }
 }
 
-
 extension ColorExtension on String {
   toColor() {
     var hexColor = this.replaceAll("#", "");

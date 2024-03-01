@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,6 +16,7 @@ showCategorySelectDialog({
   required BuildContext context,
   required ValueChanged<String> categorySelection,
   required String category,
+  List<CategoryModel>? cate,
 }){
   String selectedCategory=category;
   int active=0;
@@ -27,9 +25,12 @@ showCategorySelectDialog({
     width=MediaQuery.of(context).size.width;
     height=MediaQuery.of(context).size.height;
     return StatefulBuilder(builder: (context,setState){
+      init()async{
+        setState((){});
+      }
       return Container(
         width: MediaQuery.of(context).size.width,
-        margin: EdgeInsets.symmetric(vertical:height*0.10),
+        margin: EdgeInsets.symmetric(vertical:height*0.15),
         color: AppColors.c_363636,
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -44,7 +45,7 @@ showCategorySelectDialog({
             ),
             SizedBox(height: 22.h,),
             SizedBox(
-              height:height*0.61,
+              height:height*0.41,
               child: GridView.count(crossAxisCount: 3,
                 children: [
                   ...List.generate(categories.length, (index){
@@ -74,6 +75,7 @@ showCategorySelectDialog({
                   }),
                   ZoomTapAnimation(
                     onTap: (){
+                      init();
                     },
                     child: Column(children: [
                       Container(
@@ -93,23 +95,62 @@ showCategorySelectDialog({
             ),
             Padding(
               padding:EdgeInsets.symmetric(horizontal: 20.w,vertical: 8.h),
-              child: Row(children: [
-                Expanded(
-                  child: TextButton(onPressed:(){
-                    Navigator.pushNamed(context,RouteNames.addCategory);
-                  },
-                      style: TextButton.styleFrom(
-                        backgroundColor: AppColors.c_8E7CFF,
-                          padding: EdgeInsets.symmetric(vertical:12.h),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4.r)
-                          )
-                      ),
-                      child:Text("Add category",style: AppTextStyle.interRegular.copyWith(
-                          fontSize: 16.sp,color: AppColors.white
-                      ),)),
-                ),
-              ],),
+              child: Column(
+                children: [
+                  Row(children: [
+                    Expanded(
+                      child: TextButton(onPressed:(){
+                        Navigator.pop(context);
+                      },
+                          style: TextButton.styleFrom(
+                              backgroundColor: AppColors.c_8E7CFF,
+                              padding: EdgeInsets.symmetric(vertical:12.h),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4.r)
+                              )
+                          ),
+                          child:Text("Cancel",style: AppTextStyle.interRegular.copyWith(
+                              fontSize: 16.sp,color: AppColors.white
+                          ),)),
+                    ),
+                    SizedBox(width:15.w,),
+                    Expanded(
+                      child: TextButton(onPressed:(){
+                        categorySelection.call(selectedCategory);
+                        Navigator.pop(context);
+                        },
+                          style: TextButton.styleFrom(
+                              backgroundColor: AppColors.c_8E7CFF,
+                              padding: EdgeInsets.symmetric(vertical:12.h),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4.r)
+                              )
+                          ),
+                          child:Text("Save",style: AppTextStyle.interRegular.copyWith(
+                              fontSize: 16.sp,color: AppColors.white
+                          ),)),
+                    )
+                  ],),
+                  SizedBox(height:10.h,),
+                  Row(children: [
+                    Expanded(
+                      child: TextButton(onPressed:(){
+                        Navigator.pushNamed(context,RouteNames.addCategory);
+                      },
+                          style: TextButton.styleFrom(
+                            backgroundColor: AppColors.c_8E7CFF,
+                              padding: EdgeInsets.symmetric(vertical:12.h),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4.r)
+                              )
+                          ),
+                          child:Text("Add category",style: AppTextStyle.interRegular.copyWith(
+                              fontSize: 16.sp,color: AppColors.white
+                          ),)),
+                    ),
+                  ],),
+                ],
+              ),
             )
           ],
         ),
