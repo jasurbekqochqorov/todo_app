@@ -79,7 +79,7 @@ class TaskModels {
     status: TaskStatus.processing,
     category: "",
     deadline: DateTime.now(),
-    priority: 1,
+    priority: 0,
   );
 }
 

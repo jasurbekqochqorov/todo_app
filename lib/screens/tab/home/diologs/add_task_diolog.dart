@@ -22,7 +22,7 @@ addTaskDialog({required BuildContext context,required ValueChanged<TaskModels> t
   TimeOfDay? timeOfDay;
   DateTime? dateTime;
 
-  int priority=1;
+  int priority=0;
   String category='';
   final FocusNode focusNode1=FocusNode();
   final FocusNode focusNode2=FocusNode();
@@ -122,20 +122,21 @@ addTaskDialog({required BuildContext context,required ValueChanged<TaskModels> t
                                 priority=p;
                               });
                               taskModels=taskModels.copyWith(priority: p);
-                              if(taskModels.canAddTaskToDatabase()) {
-                                showSuccessMessage("SUCCESS");
-                                taskModelChanged.call(taskModels);
-                                Navigator.pop(context);
-                              } else {
-                                showErrorMessage("ERROR");
-                              }
                             });
                           },
                           icon: SvgPicture.asset(AppImages.flag,
                               width: 30.w, height: 30.h)),
                       const Spacer(),
                       IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if(taskModels.canAddTaskToDatabase()) {
+                              showSuccessMessage("SUCCESS");
+                              taskModelChanged.call(taskModels);
+                              Navigator.pop(context);
+                            } else {
+                              showErrorMessage("ERROR");
+                            }
+                          },
                           icon: SvgPicture.asset(AppImages.send,
                               width: 30.w, height: 30.h)),
                     ],

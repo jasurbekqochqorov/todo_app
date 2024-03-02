@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:homework12/data/models/category/category_model.dart';
+import 'package:homework12/data/models/local/local_database.dart';
 import 'package:homework12/data/models/task/task_models.dart';
+import 'package:homework12/global/global.dart';
+import 'package:homework12/screens/add_category/add_category.dart';
 import 'package:homework12/utils/icons/icon.dart';
 import '../../../../../utils/color/color.dart';
 import '../../../../../utils/fonts/fonts.dart';
@@ -18,6 +22,30 @@ class TaskItemView extends StatefulWidget {
 
 
 class _TaskItemViewState extends State<TaskItemView> {
+  Color? color;
+  String icon=AppImages.study;
+  _check()async{
+    List<CategoryModel> categoryModels=await LocalDatabase.getAllCategory();
+    for(int i=0; i<categories.length; i++){
+      if(categories[i].title==widget.taskModel.category){
+        color=ColorExtension(categories[i].color).toColor();
+        icon=categories[i].iconPath;
+      }
+    }
+   if(color==null){
+     for(int i=0; i<categories.length; i++){
+       if(categories[i].title==widget.taskModel.category){
+         color=ColorExtension(categories[i].color).toColor();
+         icon=categoryModels[i].iconPath;
+       }
+     }
+   }
+  }
+  @override
+  void initState() {
+    _check();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,7 +67,7 @@ class _TaskItemViewState extends State<TaskItemView> {
           IconButton(onPressed:widget.onUpdate, icon:const Icon(Icons.edit,color:Colors.green,)),
         ],),
         Row(children: [
-          Text('Today at:${widget.taskModel.status.name}',style: AppTextStyle.interRegular.copyWith(
+          Text('Today at:${widget.taskModel.deadline.hour.hour()}:${widget.taskModel.deadline.minute.minute()}',style: AppTextStyle.interRegular.copyWith(
               color: AppColors.white,fontSize:  14.sp
           ),),
           const Spacer(),
@@ -47,10 +75,10 @@ class _TaskItemViewState extends State<TaskItemView> {
             padding: EdgeInsets.symmetric(horizontal:8.w,vertical:8.h),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4.r),
-                color: AppColors.c_809CFF
+                color: color
             ),
             child: Row(children: [
-             SvgPicture.asset(AppImages.study,width:15.w,height: 15.h,),
+             SvgPicture.asset(icon,width:15.w,height: 15.h,),
               SizedBox(width:5.w,),
               Text(widget.taskModel.category,style: AppTextStyle.interRegular.copyWith(
                   color: AppColors.white,fontSize:12.sp
@@ -76,5 +104,28 @@ class _TaskItemViewState extends State<TaskItemView> {
         ],)
       ],),
     );
+  }
+}
+
+
+
+extension Hour on int{
+  hour(){
+    if(this<10){
+      return "0$this";
+    }
+    else{
+      return this;
+    }
+  }
+}
+extension Minute on int{
+  minute(){
+    if(this<10){
+      return "0$this";
+    }
+    else{
+      return this;
+    }
   }
 }

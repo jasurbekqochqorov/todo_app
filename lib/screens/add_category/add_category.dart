@@ -6,6 +6,7 @@ import 'package:homework12/data/models/local/local_database.dart';
 import 'package:homework12/global/global.dart';
 import 'package:homework12/utils/color/color.dart';
 import 'package:homework12/utils/fonts/fonts.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 
 class AddCategoryScreen extends StatefulWidget {
@@ -15,14 +16,12 @@ class AddCategoryScreen extends StatefulWidget {
 }
 class _AddCategoryScreenState extends State<AddCategoryScreen> {
   CategoryModel categoryModel=CategoryModel.initialValue;
-  List<CategoryModel> category=[];
   TextEditingController categoryController=TextEditingController();
   int activeColor=-1;
   int activeIcon=-1;
   _init() async{
     setState(() {});
   }
-
   @override
   void initState() {
     _init();
@@ -48,12 +47,12 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
           Text('Category name :',style: AppTextStyle.interRegular.copyWith(
-            color: AppColors.white
+            color: AppColors.white,fontSize:16.sp
           ),),
           SizedBox(height:16.h,),
           TextField(
-            style: AppTextStyle.interSemiBold.copyWith(
-              color: AppColors.white,fontSize:15.sp
+            style: AppTextStyle.interRegular.copyWith(
+              color: AppColors.white,fontSize:20.sp
             ),
             controller: categoryController,
             onChanged: (v){
@@ -62,9 +61,9 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
             decoration: InputDecoration(
               hintText: 'Category name',
               hintStyle: AppTextStyle.interRegular.copyWith(
-                color: AppColors.white
+                color: AppColors.white,fontSize:16.sp
               ),
-              border: OutlineInputBorder(
+              focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(width: 1.sp,color: AppColors.c_979797),
                 borderRadius: BorderRadius.circular(4.r)
               ),
@@ -76,61 +75,74 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
           ),
           SizedBox(height: 20.h,),
           Text('Category icon:',style: AppTextStyle.interRegular.copyWith(
-            color: AppColors.white
+            color: AppColors.white,fontSize:16.sp
           ),),
         ],),),
           SizedBox(
-            height:90.h,
+            height:75.h,
             child: ListView(
+              padding: EdgeInsets.symmetric(horizontal:12.w),
               scrollDirection: Axis.horizontal,
               children: [
-                ...List.generate(cate.length, (index){
-                  return TextButton(
-                    onPressed: (){
+                ...List.generate(categories.length, (index){
+                  return ZoomTapAnimation(
+                    onTap: (){
                       activeIcon=index;
                       String icon='';
                       icon=categories[index].iconPath.toString();
                       categoryModel=categoryModel.copyWith(iconPath: icon.toString());
                       setState(() {});
                     },
-                    child:SvgPicture.asset(categories[index].iconPath,colorFilter: ColorFilter.mode(
-                        (activeIcon==index)?Colors.green:Colors.blue,BlendMode.srcIn
-                    ),),
+                    child:Container(
+                      margin: EdgeInsets.symmetric(horizontal:8.w),
+                      decoration: BoxDecoration(
+                      color: AppColors.white,
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal:20.w,vertical:10.h),
+                      child: Column(children: [
+                        SvgPicture.asset(categories[index].iconPath,width:30.w,height:30.h,),
+                        (activeIcon==index)?const Icon(Icons.check,color: AppColors.black,):const Text('')
+                      ],),
+                    ),
                   );
                 }),
               ],
             ),
           ),
+          SizedBox(height:20.h,),
           Padding(
             padding: EdgeInsets.symmetric(horizontal:20.w),
             child: Text('Category color:',style: AppTextStyle.interRegular.copyWith(
-                color: AppColors.white
+                color: AppColors.white,fontSize:16.sp
             ),),
           ),
+          SizedBox(height:20.h,),
         SizedBox(
-          height:90.h,
+          height:60.h,
           child: ListView(
+            padding: EdgeInsets.symmetric(horizontal:20.w),
             scrollDirection: Axis.horizontal,
             children: [
-              ...List.generate(cate.length, (index){
-                return TextButton(
-                  onPressed: (){
-                    activeColor=index;
-                    String color=categories[index].color;
-                    categoryModel=categoryModel.copyWith(color: color);
-                    setState(() {});
-                  },child:Column(children: [
-                  (activeColor==index)?const Icon(Icons.check,color:Colors.green,):Text(''),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal:5.w),
-                    width:36.w,
-                    height: 36.h,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: ColorExtension(categories[index].color).toColor(),
+              ...List.generate(categories.length, (index){
+                return Row(children: [
+                  TextButton(
+                    onPressed: (){
+                      activeColor=index;
+                      String color=categories[index].color;
+                      categoryModel=categoryModel.copyWith(color: color);
+                      setState(() {});
+                    },
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(vertical:20.h,horizontal:20.w),
+                      backgroundColor:ColorExtension(categories[index].color).toColor(),
+                      shape:RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100)
+                      ),
                     ),
-                  )
-                ],),);
+                    child:(activeColor==index)?const Icon(Icons.check,color:Colors.white,):Text(''),),
+                  SizedBox(width:8.w,),
+                ],);
               }),
             ],
           ),

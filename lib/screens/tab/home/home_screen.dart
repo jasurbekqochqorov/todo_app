@@ -3,13 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:homework12/data/models/local/local_database.dart';
 import 'package:homework12/data/models/task/task_models.dart';
-import 'package:homework12/screens/tab/home/diologs/add_task_diolog.dart';
 import 'package:homework12/screens/tab/home/diologs/update_task_diolog.dart';
 import 'package:homework12/screens/tab/home/diologs/widgets/task_item_view.dart';
 import 'package:homework12/utils/color/color.dart';
 import 'package:homework12/utils/fonts/fonts.dart';
-
-import '../../../global/global.dart';
 import '../../../utils/icons/icon.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -57,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
         centerTitle: true,
       ),
-      body: (false)?Center(
+      body:(tasks.isEmpty)?Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -97,11 +94,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   contentPadding: EdgeInsets.symmetric(horizontal:13.w,vertical:12.h),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4.r),
-                    borderSide: BorderSide(width:1,color: AppColors.white)
+                    borderSide: const BorderSide(width:1,color: AppColors.white)
                   ),
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(4.r),
-                      borderSide: BorderSide(width:1,color: AppColors.white)
+                      borderSide:const  BorderSide(width:1,color: AppColors.white)
                   ),
                 ),
               ),
@@ -110,8 +107,24 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ListView(children:List.generate(tasks.length, (index){
                 return TaskItemView(taskModel: tasks[index],
                     onDelete: ()async{
-                      int d= await LocalDatabase.deleteTask(tasks[index].id!);
-                      _init();
+                      showDialog(context: context, builder: (context){
+                        return AlertDialog(
+
+                          titlePadding: EdgeInsets.symmetric(horizontal:10.w,vertical:10.h),
+                          actionsPadding: EdgeInsets.only(right:5.w,top: 20.h),
+                          title: const Center(child: Text('Are you sure')),
+                          actions: [
+                            TextButton(onPressed: (){
+                              Navigator.pop(context);
+                            }, child:const Text("NO")),
+                            TextButton(onPressed: ()async{
+                              int d= await LocalDatabase.deleteTask(tasks[index].id!);
+                              _init();
+                              Navigator.pop(context);
+                            }, child:const Text("YES")),
+                          ],
+                        );
+                      });
                     }, onUpdate:(){
                       updateTaskDialog(context: context, taskModels:tasks[index], taskModelChanged:(updateTask) async{
                         await LocalDatabase.updateTask(updateTask.copyWith(id:tasks[index].id),tasks[index].id!,);
@@ -127,3 +140,17 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+//(false)?Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//           Image.asset(AppImages.picture,width: 227.2,height: 227.h,),
+//             Text('What do you want to do today?',style: AppTextStyle.interSemiBold.copyWith(
+//               color: AppColors.white,fontSize: 20.sp
+//             ),),
+//             SizedBox(height: 10.h,),
+//             Text('Tap + to add your tasks',style: AppTextStyle.interRegular.copyWith(
+//               color: AppColors.white.withOpacity(0.87),fontSize: 16.sp
+//             ),)
+//         ],),
+//       )

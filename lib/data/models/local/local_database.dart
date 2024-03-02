@@ -143,5 +143,15 @@ class LocalDatabase{
     List json=await db.query(CategoryModelConstants.tableName);
     return json.map((e) => CategoryModel.fromJson(e)).toList();
   }
+  static Future<int> deleteCategory(int id) async {
+    final db=await databaseInstance.database;
+    int deletedId=await db.delete(
+      CategoryModelConstants.tableName,
+      where:"${CategoryModelConstants.id} = ?",
+      whereArgs: [id],
+    );
+    return deletedId;
+  }
+
 
 }

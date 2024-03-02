@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,7 +10,6 @@ import '../../../../global/global.dart';
 import '../../../../utils/color/color.dart';
 import '../../../../utils/extension/extension.dart';
 import '../../../../utils/fonts/fonts.dart';
-import '../../../../utils/icons/icon.dart';
 
 showCategorySelectDialog ({
   required BuildContext context,
@@ -20,16 +18,12 @@ showCategorySelectDialog ({
   List<CategoryModel>? cate,
 }) async{
   String selectedCategory=category;
-  int active=0;
   List<CategoryModel> category1=await LocalDatabase.getAllCategory();
-
+  if(!context.mounted) return;
   showDialog(context: context, builder: (context){
     width=MediaQuery.of(context).size.width;
     height=MediaQuery.of(context).size.height;
     return StatefulBuilder(builder: (context,setState){
-      init()async{
-        setState((){});
-      }
       return Container(
         width: MediaQuery.of(context).size.width,
         margin: EdgeInsets.symmetric(vertical:height*0.15),
@@ -47,7 +41,7 @@ showCategorySelectDialog ({
             ),
             SizedBox(height: 22.h,),
             SizedBox(
-              height:height*0.41,
+              height:height*0.43,
               child: GridView.count(crossAxisCount: 3,
                 children: [
                   ...List.generate(categories.length, (index){
@@ -79,7 +73,26 @@ showCategorySelectDialog ({
                     return ZoomTapAnimation(
                       onTap: (){
                         setState((){
-                          selectedCategory=categories[index].title;
+                          selectedCategory=category1[index].title;
+                        });
+                      },
+                      onLongTap: ()async{
+                        showDialog(context: context, builder: (context){
+                          return AlertDialog(
+                            titlePadding: EdgeInsets.symmetric(horizontal:10.w,vertical:10.h),
+                            actionsPadding: EdgeInsets.only(right:5.w,top: 15.h),
+                            title: const Center(child: Text('Are you sure')),
+                            actions: [
+                              TextButton(onPressed: (){
+                                Navigator.pop(context);
+                              }, child:const Text("NO")),
+                              TextButton(onPressed: ()async{
+                                int d= await LocalDatabase.deleteCategory(category1[index].id!);
+                                setState((){});
+                                Navigator.pop(context);
+                              }, child:const Text("YES")),
+                            ],
+                          );
                         });
                       },
                       child: Column(
@@ -89,37 +102,19 @@ showCategorySelectDialog ({
                             ),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(4.r),
-                                color: (categories[index].title==selectedCategory)?AppColors.white:ColorExtension(categories[index].color).toColor()
+                                color: (category1[index].title==selectedCategory)?AppColors.white:ColorExtension(categories[index].color).toColor()
                             ),
-                            child:SvgPicture.asset(categories[index].iconPath,width:32.h,height:32.h.h,),
+                            child:SvgPicture.asset(category1[index].iconPath,width:32.h,height:32.h.h,),
                           ),
-                          Text(categories[index].title,style: AppTextStyle.interRegular.copyWith(
+                          Text(category1[index].title,style: AppTextStyle.interRegular.copyWith(
                               color: AppColors.white.withOpacity(0.87),fontSize:14.sp
                           ),)
                         ],
                       ),
                     );
                   }),
-                  ZoomTapAnimation(
-                    onTap: (){
-                      init();
-                    },
-                    child: Column(children: [
-                      Container(
-                        padding:EdgeInsets.symmetric(horizontal: 16.w,vertical:16.h),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4.r),
-                            color:AppColors.blue
-                        ),
-                        child:Icon(Icons.add,color:AppColors.white,size:32.sp,),
-                      ),
-                      Text('Create new',style: AppTextStyle.interRegular.copyWith(
-                          color: AppColors.white.withOpacity(0.87),fontSize:14.sp
-                      ),)
-                    ],),
-                  )
                 ],),
-            ),
+            ),Spacer(),
             Padding(
               padding:EdgeInsets.symmetric(horizontal: 20.w,vertical: 8.h),
               child: Column(

@@ -35,11 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                AppImages.profile2,
-                width: 82.w,
-                height: 82,
-              ),
+              Icon(Icons.person_pin,color: AppColors.white,size:100.sp,),
               SizedBox(
                 height: 10.h,
               ),
