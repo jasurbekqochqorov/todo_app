@@ -19,11 +19,8 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
   TextEditingController categoryController=TextEditingController();
   int activeColor=-1;
   int activeIcon=-1;
-  int k=0;
   _init() async{
-    category= await LocalDatabase.getAllCategory();
     setState(() {});
-    categories.add(category[category.length-1]);
   }
 
   @override

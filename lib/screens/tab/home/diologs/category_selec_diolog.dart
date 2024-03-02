@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:homework12/data/models/category/category_model.dart';
+import 'package:homework12/data/models/local/local_database.dart';
 import 'package:homework12/screens/routes.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -12,16 +13,17 @@ import '../../../../utils/extension/extension.dart';
 import '../../../../utils/fonts/fonts.dart';
 import '../../../../utils/icons/icon.dart';
 
-showCategorySelectDialog({
+showCategorySelectDialog ({
   required BuildContext context,
   required ValueChanged<String> categorySelection,
   required String category,
   List<CategoryModel>? cate,
-}){
+}) async{
   String selectedCategory=category;
   int active=0;
-  showDialog(context: context, builder: (context){
+  List<CategoryModel> category1=await LocalDatabase.getAllCategory();
 
+  showDialog(context: context, builder: (context){
     width=MediaQuery.of(context).size.width;
     height=MediaQuery.of(context).size.height;
     return StatefulBuilder(builder: (context,setState){
@@ -68,6 +70,31 @@ showCategorySelectDialog({
                           ),
                           Text(categories[index].title,style: AppTextStyle.interRegular.copyWith(
                             color: AppColors.white.withOpacity(0.87),fontSize:14.sp
+                          ),)
+                        ],
+                      ),
+                    );
+                  }),
+                  ...List.generate(category1.length, (index){
+                    return ZoomTapAnimation(
+                      onTap: (){
+                        setState((){
+                          selectedCategory=categories[index].title;
+                        });
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+                            padding:EdgeInsets.symmetric(horizontal: 16.w,vertical:16.h
+                            ),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4.r),
+                                color: (categories[index].title==selectedCategory)?AppColors.white:ColorExtension(categories[index].color).toColor()
+                            ),
+                            child:SvgPicture.asset(categories[index].iconPath,width:32.h,height:32.h.h,),
+                          ),
+                          Text(categories[index].title,style: AppTextStyle.interRegular.copyWith(
+                              color: AppColors.white.withOpacity(0.87),fontSize:14.sp
                           ),)
                         ],
                       ),
