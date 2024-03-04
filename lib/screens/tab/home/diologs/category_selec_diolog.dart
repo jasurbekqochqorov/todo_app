@@ -6,7 +6,6 @@ import 'package:homework12/data/models/local/local_database.dart';
 import 'package:homework12/screens/routes.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
-import '../../../../global/global.dart';
 import '../../../../utils/color/color.dart';
 import '../../../../utils/extension/extension.dart';
 import '../../../../utils/fonts/fonts.dart';
@@ -44,32 +43,6 @@ showCategorySelectDialog ({
               height:height*0.43,
               child: GridView.count(crossAxisCount: 3,
                 children: [
-                  // ...List.generate(categories.length, (index){
-                  //   return ZoomTapAnimation(
-                  //     onTap: (){
-                  //       setState((){
-                  //         selectedCategoryId=categories[index].id!
-                  //         ;
-                  //       });
-                  //     },
-                  //     child: Column(
-                  //       children: [
-                  //         Container(
-                  //           padding:EdgeInsets.symmetric(horizontal: 16.w,vertical:16.h
-                  //           ),
-                  //           decoration: BoxDecoration(
-                  //               borderRadius: BorderRadius.circular(4.r),
-                  //               color: (categories[index].id==selectedCategoryId)?AppColors.white:ColorExtension(categories[index].color).toColor()
-                  //           ),
-                  //           child:SvgPicture.asset(categories[index].iconPath,width:32.h,height:32.h.h,),
-                  //         ),
-                  //         Text(categories[index].title,style: AppTextStyle.interRegular.copyWith(
-                  //           color: AppColors.white.withOpacity(0.87),fontSize:14.sp
-                  //         ),)
-                  //       ],
-                  //     ),
-                  //   );
-                  // }),
                   ...List.generate(category1.length, (index){
                     return ZoomTapAnimation(
                       onTap: (){

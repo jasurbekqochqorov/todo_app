@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:homework12/data/models/category/category_model.dart';
 import 'package:homework12/data/models/local/local_database.dart';
 import 'package:homework12/data/models/task/task_models.dart';
-import 'package:homework12/data/models/task/task_status.dart';
 import 'package:homework12/screens/add_category/add_category.dart';
 import '../../../../../utils/color/color.dart';
 import '../../../../../utils/fonts/fonts.dart';
@@ -16,7 +15,6 @@ class TaskItemView extends StatefulWidget {
   final TaskModels taskModel;
   final VoidCallback onDelete;
   final VoidCallback onUpdate;
-
   @override
   State<TaskItemView> createState() => _TaskItemViewState();
 }
@@ -46,16 +44,16 @@ class _TaskItemViewState extends State<TaskItemView> {
               icon: const Icon(Icons.delete, color: Colors.red,)),
           IconButton(onPressed: widget.onUpdate,
               icon: const Icon(Icons.edit, color: Colors.green,)),
-          Checkbox(value:isCheck, onChanged:(v){
-            isCheck=v!;
-            if(isCheck==true){
-              task=task.copyWith(status:TaskStatus.done);
-            }
-            else{
-              task=task.copyWith(status: TaskStatus.missed);
-            }
-            setState((){});
-          }),
+          // Checkbox(value:isCheck, onChanged:(v){
+          //   isCheck=v!;
+          //   if(isCheck==true){
+          //     task=task.copyWith(status:TaskStatus.done);
+          //   }
+          //   else{
+          //     task=task.copyWith(status: TaskStatus.missed);
+          //   }
+          //   setState((){});
+          // }),
         ],),
         Row(children: [
           Text('Today at:${widget.taskModel.deadline.hour.hour()}:${widget

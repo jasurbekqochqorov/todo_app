@@ -5,7 +5,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:homework12/data/models/category/category_model.dart';
 import 'package:homework12/data/models/local/local_database.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
-
 import '../../utils/color/color.dart';
 import '../../utils/fonts/fonts.dart';
 import '../routes.dart';
@@ -43,7 +42,6 @@ class _SettingScreenState extends State<SettingScreen> {
         centerTitle: true,
       ),
       body: Column(children: [
-
         SizedBox(height: 30.h,),
         Expanded(
           child: GridView.count(crossAxisCount: 3,children:[
@@ -91,7 +89,6 @@ class _SettingScreenState extends State<SettingScreen> {
             );
           }),]),
         ),
-        Spacer(),
         Container(
           width: double.infinity,
           padding:EdgeInsets.symmetric(horizontal: 20.w,vertical: 8.h),

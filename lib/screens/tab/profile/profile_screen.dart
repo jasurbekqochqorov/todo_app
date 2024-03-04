@@ -131,7 +131,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ListTileWidget(icon: AppImages.settings, title: 'App Settings',onTap: (){
+              ListTileWidget(icon: AppImages.settings, title: 'Add Category',onTap: (){
                 Navigator.pushNamed(context,RouteNames.settings);
               },),
               Padding(
