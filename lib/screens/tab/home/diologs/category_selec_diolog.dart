@@ -13,11 +13,11 @@ import '../../../../utils/fonts/fonts.dart';
 
 showCategorySelectDialog ({
   required BuildContext context,
-  required ValueChanged<String> categorySelection,
-  required String category,
+  required ValueChanged<int> categorySelection,
+  required int category,
   List<CategoryModel>? cate,
 }) async{
-  String selectedCategory=category;
+  int selectedCategoryId=category;
   List<CategoryModel> category1=await LocalDatabase.getAllCategory();
   if(!context.mounted) return;
   showDialog(context: context, builder: (context){
@@ -44,36 +44,37 @@ showCategorySelectDialog ({
               height:height*0.43,
               child: GridView.count(crossAxisCount: 3,
                 children: [
-                  ...List.generate(categories.length, (index){
-                    return ZoomTapAnimation(
-                      onTap: (){
-                        setState((){
-                          selectedCategory=categories[index].title;
-                        });
-                      },
-                      child: Column(
-                        children: [
-                          Container(
-                            padding:EdgeInsets.symmetric(horizontal: 16.w,vertical:16.h
-                            ),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4.r),
-                                color: (categories[index].title==selectedCategory)?AppColors.white:ColorExtension(categories[index].color).toColor()
-                            ),
-                            child:SvgPicture.asset(categories[index].iconPath,width:32.h,height:32.h.h,),
-                          ),
-                          Text(categories[index].title,style: AppTextStyle.interRegular.copyWith(
-                            color: AppColors.white.withOpacity(0.87),fontSize:14.sp
-                          ),)
-                        ],
-                      ),
-                    );
-                  }),
+                  // ...List.generate(categories.length, (index){
+                  //   return ZoomTapAnimation(
+                  //     onTap: (){
+                  //       setState((){
+                  //         selectedCategoryId=categories[index].id!
+                  //         ;
+                  //       });
+                  //     },
+                  //     child: Column(
+                  //       children: [
+                  //         Container(
+                  //           padding:EdgeInsets.symmetric(horizontal: 16.w,vertical:16.h
+                  //           ),
+                  //           decoration: BoxDecoration(
+                  //               borderRadius: BorderRadius.circular(4.r),
+                  //               color: (categories[index].id==selectedCategoryId)?AppColors.white:ColorExtension(categories[index].color).toColor()
+                  //           ),
+                  //           child:SvgPicture.asset(categories[index].iconPath,width:32.h,height:32.h.h,),
+                  //         ),
+                  //         Text(categories[index].title,style: AppTextStyle.interRegular.copyWith(
+                  //           color: AppColors.white.withOpacity(0.87),fontSize:14.sp
+                  //         ),)
+                  //       ],
+                  //     ),
+                  //   );
+                  // }),
                   ...List.generate(category1.length, (index){
                     return ZoomTapAnimation(
                       onTap: (){
                         setState((){
-                          selectedCategory=category1[index].title;
+                          selectedCategoryId=category1[index].id!;
                         });
                       },
                       onLongTap: ()async{
@@ -102,7 +103,7 @@ showCategorySelectDialog ({
                             ),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(4.r),
-                                color: (category1[index].title==selectedCategory)?AppColors.white:ColorExtension(categories[index].color).toColor()
+                                color: (category1[index].id==selectedCategoryId)?AppColors.white:ColorExtension(category1[index].color).toColor()
                             ),
                             child:SvgPicture.asset(category1[index].iconPath,width:32.h,height:32.h.h,),
                           ),
@@ -138,7 +139,7 @@ showCategorySelectDialog ({
                     SizedBox(width:15.w,),
                     Expanded(
                       child: TextButton(onPressed:(){
-                        categorySelection.call(selectedCategory);
+                        categorySelection.call(selectedCategoryId);
                         Navigator.pop(context);
                         },
                           style: TextButton.styleFrom(
@@ -157,7 +158,11 @@ showCategorySelectDialog ({
                   Row(children: [
                     Expanded(
                       child: TextButton(onPressed:(){
-                        Navigator.pushNamed(context,RouteNames.addCategory);
+                        Navigator.pushNamed(context,RouteNames.addCategory,
+                        arguments: ()async{
+                          category1=await LocalDatabase.getAllCategory();
+                          setState((){});
+                        });
                       },
                           style: TextButton.styleFrom(
                             backgroundColor: AppColors.c_8E7CFF,

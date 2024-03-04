@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
     bool isEnterBefore=StorageRepository.getBool(key:'bool');
     Future.delayed(const Duration(seconds: 4),(){
       if(isEnterBefore) {
-        Navigator.pushReplacementNamed(context,RouteNames.welcomeScreen);
+        Navigator.pushReplacementNamed(context,RouteNames.tabBox);
       } else{
         Navigator.pushReplacementNamed(context,RouteNames.onBoardingScreen);
       }

@@ -7,11 +7,12 @@ import 'package:homework12/screens/tab/home/diologs/update_task_diolog.dart';
 import 'package:homework12/screens/tab/home/diologs/widgets/task_item_view.dart';
 import 'package:homework12/utils/color/color.dart';
 import 'package:homework12/utils/fonts/fonts.dart';
+import '../../../data/models/category/category_model.dart';
 import '../../../utils/icons/icon.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
+  const HomeScreen({super.key, this.stream});
+  final Stream? stream;
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -21,12 +22,16 @@ class _HomeScreenState extends State<HomeScreen> {
   TaskModels taskModels=TaskModels.initialValue;
 
   List<TaskModels> tasks=[];
+  List<TaskModels> tasks2=[];
+  int k=0;
 
   _init() async{
     tasks=await LocalDatabase.getAllTask();
+    tasks2=await LocalDatabase.getAllTask();
     setState(() {});
   }
   _searchQuery(String q)async{
+    k=1;
     tasks=await LocalDatabase.searchTasks(q);
     setState(() {});
   }
@@ -34,6 +39,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     _init();
+    if(widget.stream!=null){
+      widget.stream!.listen((event) {_init();});
+    }
     super.initState();
   }
   @override
@@ -54,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
         centerTitle: true,
       ),
-      body:(tasks.isEmpty)?Center(
+      body:(tasks2.isEmpty)?Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -81,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onChanged: _searchQuery,
                 style: AppTextStyle.interSemiBold.copyWith(
                   color:
-                    AppColors.black,fontSize:14.sp
+                    AppColors.white,fontSize:16.sp
                 ),
                 decoration:InputDecoration(
                   prefixIcon: const Icon(Icons.search,color: AppColors.c_979797,),
@@ -109,7 +117,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     onDelete: ()async{
                       showDialog(context: context, builder: (context){
                         return AlertDialog(
-
                           titlePadding: EdgeInsets.symmetric(horizontal:10.w,vertical:10.h),
                           actionsPadding: EdgeInsets.only(right:5.w,top: 20.h),
                           title: const Center(child: Text('Are you sure')),
@@ -130,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         await LocalDatabase.updateTask(updateTask.copyWith(id:tasks[index].id),tasks[index].id!,);
                         _init();
                       });
-                    });
+                    },);
               }),),
             ),
           ],

@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:homework12/screens/tab/home/diologs/category_selec_diolog.dart';
 import 'package:homework12/screens/tab/home/diologs/priority_selec_diolog.dart';
 import 'package:homework12/screens/tab/home/diologs/widgets/task_text_field.dart';
-import 'package:homework12/utils/utilities.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../data/models/task/task_models.dart';
@@ -26,7 +25,7 @@ updateTaskDialog({
   DateTime? dateTime;
 
   int priority=1;
-  String category='';
+  int category=0;
   final FocusNode focusNode1=FocusNode();
   final FocusNode focusNode2=FocusNode();
 
@@ -110,7 +109,7 @@ updateTaskDialog({
                               setState((){
                                 category=selectedCategory;
                               });
-                                  taskModels=taskModels.copyWith(category: selectedCategory);
+                                  taskModels=taskModels.copyWith(categoryId: selectedCategory);
                                 },
                                 category:category);
                           },
@@ -125,20 +124,34 @@ updateTaskDialog({
                                 priority=p;
                               });
                               taskModels=taskModels.copyWith(priority: p);
-                              if(taskModels.canAddTaskToDatabase()) {
-                                showSuccessMessage("SUCCESS");
-                                taskModelChanged.call(taskModels);
-                                Navigator.pop(context);
-                              } else {
-                                showErrorMessage("ERROR");
-                              }
                             });
                           },
                           icon: SvgPicture.asset(AppImages.flag,
                               width: 30.w, height: 30.h)),
                       const Spacer(),
                       IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if(taskModels.canAddTaskToDatabase()) {
+                              // showSuccessMessage("SUCCESS");
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                 SnackBar(
+                                  backgroundColor:Colors.green,
+                                    content:Text('Success',style: AppTextStyle.interMedium.copyWith(
+                                      color: AppColors.white,fontSize:16.sp,
+                                    ),))
+                              );
+                              taskModelChanged.call(taskModels);
+                              Navigator.pop(context);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                   SnackBar(
+                                      backgroundColor:Colors.red,
+                                      content:Text('you haven\'t changed anything',style: AppTextStyle.interMedium.copyWith(
+                                        color: AppColors.white,fontSize:16.sp
+                                      ),))
+                              );
+                            }
+                          },
                           icon: SvgPicture.asset(AppImages.send,
                               width: 30.w, height: 30.h)),
                     ],
@@ -152,9 +165,6 @@ updateTaskDialog({
                      color: AppColors.white,fontSize: 20.sp
                    ),),
                   SizedBox(height:10.h,),
-                  Text(category,style: AppTextStyle.interBold.copyWith(
-                    color: AppColors.white,fontSize:20.sp
-                  ),)
                 ],
               ),
             ),

@@ -4,6 +4,7 @@ import 'package:homework12/screens/add_category/add_category.dart';
 import 'package:homework12/screens/on_boarding/on_boarding_screen.dart';
 import 'package:homework12/screens/splash/splash_screen.dart';
 import 'package:homework12/screens/tab/tab_box.dart';
+import 'package:homework12/screens/task_detail/setting_screen.dart';
 import 'package:homework12/screens/welcome/welcome_screen.dart';
 
 class AppRoutes {
@@ -32,7 +33,11 @@ class AppRoutes {
 
       case RouteNames.addCategory:
         {
-          return navigate(const AddCategoryScreen());
+          return navigate(AddCategoryScreen(onCategoryAdded: settings.arguments as VoidCallback?,));
+        }
+      case RouteNames.settings:
+        {
+          return navigate(const SettingScreen());
         }
 
       default:{
@@ -52,4 +57,5 @@ class RouteNames{
   static const String welcomeScreen='/second_route';
   static const String tabBox='/third_route';
   static const String addCategory='/four_route';
+  static const String settings='/five_route';
 }

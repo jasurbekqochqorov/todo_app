@@ -7,7 +7,7 @@ class TaskModels {
   final int? id;
   final String title;
   final String description;
-  final String category;
+  final int categoryId;
   final DateTime deadline;
   final int priority;
   final TaskStatus status;
@@ -17,7 +17,7 @@ class TaskModels {
     required this.description,
     required this.title,
     required this.status,
-    required this.category,
+    required this.categoryId,
     required this.deadline,
     required this.priority,
   });
@@ -26,7 +26,7 @@ class TaskModels {
     int? id,
     String? title,
     String? description,
-    String? category,
+    int? categoryId,
     DateTime? deadline,
     int? priority,
     TaskStatus? status,
@@ -35,7 +35,7 @@ class TaskModels {
       description: description ?? this.description,
       title: title ?? this.title,
       status: status ?? this.status,
-      category: category ?? this.category,
+      categoryId: categoryId ?? this.categoryId,
       deadline: deadline ?? this.deadline,
       priority: priority ?? this.priority,
     );
@@ -46,7 +46,7 @@ class TaskModels {
       description: json[TaskModelConstants.description] as String? ?? "",
       title: json[TaskModelConstants.title] as String? ?? "",
       status: getStatus(json[TaskModelConstants.status] as String? ?? ""),
-      category: json[TaskModelConstants.category] as String? ?? "",
+      categoryId: json[TaskModelConstants.category] as int? ?? 0,
       deadline:
       DateTime.parse(json[TaskModelConstants.deadline] as String? ?? ""),
       priority: json[TaskModelConstants.priority] as int? ?? 1,
@@ -59,7 +59,7 @@ class TaskModels {
       TaskModelConstants.description: description,
       TaskModelConstants.title: title,
       TaskModelConstants.status: status.name,
-      TaskModelConstants.category: category,
+      TaskModelConstants.category: categoryId,
       TaskModelConstants.deadline: deadline.toString(),
       TaskModelConstants.priority: priority,
     };
@@ -68,7 +68,7 @@ class TaskModels {
   bool canAddTaskToDatabase() {
     if (title.isEmpty) return false;
     if (description.isEmpty) return false;
-    if (category.isEmpty) return false;
+    if (categoryId==0) return false;
     if (priority == 0) return false;
     return true;
   }
@@ -77,7 +77,7 @@ class TaskModels {
     description: "",
     title: "",
     status: TaskStatus.processing,
-    category: "",
+    categoryId: 0,
     deadline: DateTime.now(),
     priority: 0,
   );
@@ -92,10 +92,6 @@ TaskStatus getStatus(String statusText) {
     case "done":
       {
         return TaskStatus.done;
-      }
-    case "canceled":
-      {
-        return TaskStatus.canceled;
       }
     default:
       {

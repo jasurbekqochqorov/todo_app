@@ -50,7 +50,7 @@ class LocalDatabase{
       ${TaskModelConstants.description} $textType,
       ${TaskModelConstants.deadline} $textType,
       ${TaskModelConstants.status} $textType,
-      ${TaskModelConstants.category} $textType,
+      ${TaskModelConstants.category} $intType,
       ${TaskModelConstants.priority} $intType
       )''');
 
@@ -151,6 +151,18 @@ class LocalDatabase{
       whereArgs: [id],
     );
     return deletedId;
+  }
+
+  static Future<CategoryModel> getCategoryById(int id) async {
+    final db=await databaseInstance.database;
+    String orderBy="${CategoryModelConstants.id} DESC";
+    List json=await db.query(
+      CategoryModelConstants.tableName,
+      orderBy: orderBy,
+      where:"${CategoryModelConstants.id} = ?",
+      whereArgs: [id],
+    );
+    return json.map((e) => CategoryModel.fromJson(e)).toList()[0];
   }
 
 

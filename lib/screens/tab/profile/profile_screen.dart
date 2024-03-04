@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:homework12/data/models/local/local_database.dart';
+import 'package:homework12/data/models/local/local_storage.dart';
+import 'package:homework12/data/models/task/task_models.dart';
+import 'package:homework12/screens/routes.dart';
+import 'package:homework12/screens/tab/profile/widgets./list_tile_widget.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../utils/color/color.dart';
+import '../../../utils/fonts/fonts.dart';
 import '../../../utils/icons/icon.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -14,6 +20,22 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final TextEditingController nameController=TextEditingController();
+  List<TaskModels> taskModel=[];
+  List<TaskModels> left=[];
+  List<TaskModels> done=[];
+
+  _init()async{
+    taskModel=await LocalDatabase.getAllTask();
+    left=taskModel.map((element) => element.status.name=='missed').cast<TaskModels>().toList();
+    done=taskModel.map((element) => element.status.name=='done').cast<TaskModels>().toList();
+    setState(() {});
+  }
+  @override
+  void initState() {
+    _init();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 height: 10.h,
               ),
               Text(
-                "Martha Hays",
+                StorageRepository.getString(key: 'name'),
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
@@ -58,12 +80,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     width: 154,
                     height: 58,
                     decoration: BoxDecoration(
-                      color: Color(0xFF363636),
+                      color: const Color(0xFF363636),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Center(
                       child: Text(
-                        "10 Task left",
+                        "${left.length} Task left",
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
@@ -82,7 +104,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     child: Center(
                       child: Text(
-                        "5 Task done",
+                        "${done.length} Task done",
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
@@ -96,251 +118,109 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
           ),
           Padding(
-            padding: EdgeInsets.only(top: 32.h, left: 24.w, bottom: 16.h),
+            padding: EdgeInsets.only(top: 32.h, left: 20.w, bottom: 16.h),
             child: Text(
               "Settings",
               style: TextStyle(
-                color: Color(0xFFAFAFAF),
+                color: const Color(0xFFAFAFAF),
                 fontWeight: FontWeight.w400,
                 fontSize: 14.sp,
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(left:8.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ListTile(
-                  onTap: (){},
-                  leading: SvgPicture.asset(
-                    AppImages.settings,
-                    width: 24.w,
-                    height: 24.h,
-                  ),
-                  title: Text(
-                    "App Settings",
-                    style: TextStyle(
-                      color: AppColors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16.sp,
-                    ),
-                  ),
-                  trailing: IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset(
-                        AppImages.arrowLeft,
-                        width: 23.w,
-                        height: 23.h,
-                      )),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 20.h, left: 20.w, bottom: 16.h),
-                  child: Text(
-                    "Account",
-                    style: TextStyle(
-                      color: Color(0xFFAFAFAF),
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14.sp,
-                    ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ListTileWidget(icon: AppImages.settings, title: 'App Settings',onTap: (){
+                Navigator.pushNamed(context,RouteNames.settings);
+              },),
+              Padding(
+                padding: EdgeInsets.only(top: 20.h, left: 20.w, bottom: 16.h),
+                child: Text(
+                  "Account",
+                  style: TextStyle(
+                    color: Color(0xFFAFAFAF),
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14.sp,
                   ),
                 ),
-                ListTile(
-                  onTap: (){},
-                  leading: SvgPicture.asset(
-                    AppImages.user,
-                    width: 24.w,
-                    height: 24.h,
-                  ),
-                  title: Text(
-                    "Change account name",
-                    style: TextStyle(
-                      color: AppColors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16.sp,
-                    ),
-                  ),
-                  trailing: IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset(
-                        AppImages.arrowLeft,
-                        width: 23.w,
-                        height: 23.h,
-                      )),
-                ),
-                ListTile(
-                  onTap: (){},
-                  leading: SvgPicture.asset(
-                    AppImages.key,
-                    width: 24.w,
-                    height: 24.h,
-                  ),
-                  title: Text(
-                    "Change account password",
-                    style: TextStyle(
-                      color: AppColors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16.sp,
-                    ),
-                  ),
-                  trailing: IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset(
-                        AppImages.arrowLeft,
-                        width: 23.w,
-                        height: 23.h,
-                      )),
-                ),
-                ListTile(
-                  onTap: (){},
-                  leading: SvgPicture.asset(
-                    AppImages.camera,
-                    width: 24.w,
-                    height: 24.h,
-                  ),
-                  title: Text(
-                    "Change account Image",
-                    style: TextStyle(
-                      color: AppColors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16.sp,
-                    ),
-                  ),
-                  trailing: IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset(
-                        AppImages.arrowLeft,
-                        width: 23.w,
-                        height: 23.h,
-                      )),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 20.h, left: 20.w, bottom: 16.h),
-                  child: Text(
-                    "Uptodo",
-                    style: TextStyle(
-                      color: Color(0xFFAFAFAF),
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14.sp,
-                    ),
+              ),
+              ListTileWidget(icon: AppImages.user, title: "Change account name",
+              onTap: (){
+                showDialog(context: context, builder: (context){
+                  return AlertDialog(
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextField(
+                          controller: nameController,
+                          style: AppTextStyle.interMedium.copyWith(
+                              color: AppColors.black.withOpacity(0.9),fontSize:18.sp),
+                          decoration: InputDecoration(
+                            hintText: 'Enter your name',
+                            hintStyle: AppTextStyle.interMedium.copyWith(
+                                color: AppColors.black.withOpacity(0.7),fontSize:16.sp
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16.r),
+                                borderSide: BorderSide(width: 1,color: AppColors.black.withOpacity(0.8))
+                            ),
+                            enabledBorder:OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16.r),
+                                borderSide: BorderSide(width: 1,color: AppColors.black.withOpacity(0.8))
+                            ),
+                          ),
+                        ),
+                      ],),
+                    actions: [
+                      TextButton(onPressed: (){
+                        Navigator.pop(context);
+                      }, child:const Text('Cancel')),
+                      TextButton(onPressed: (){
+                        StorageRepository.setString(key: 'name', value:nameController.text);
+                        Navigator.pop(context);
+                        setState(() {});
+                      }, child:const Text('Change')),
+                    ],
+                  );
+                });
+              },),
+              Padding(
+                padding: EdgeInsets.only(top: 20.h, left: 20.w, bottom: 16.h),
+                child: Text(
+                  "Up todo",
+                  style: TextStyle(
+                    color:const Color(0xFFAFAFAF),
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14.sp,
                   ),
                 ),
-                ListTile(
-                  onTap: (){},
-                  leading: SvgPicture.asset(
-                    AppImages.aboutUs,
-                    width: 24.w,
-                    height: 24.h,
-                  ),
-                  title: Text(
-                    "About US",
-                    style: TextStyle(
-                      color: AppColors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16.sp,
-                    ),
-                  ),
-                  trailing: IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset(
-                        AppImages.arrowLeft,
-                        width: 23.w,
-                        height: 23.h,
-                      )),
+              ),
+              ListTileWidget(icon: AppImages.aboutUs, title:'About us',onTap: (){},),
+              TextButton(
+                onPressed: (){},
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal:24.w,vertical:16.h)
                 ),
-                ListTile(
-                  onTap: (){},
-                  leading: SvgPicture.asset(
-                    AppImages.faq,
-                    width: 24.w,
-                    height: 24.h,
-                  ),
-                  title: Text(
-                    "FAQ",
-                    style: TextStyle(
-                      color: AppColors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16.sp,
-                    ),
-                  ),
-                  trailing: IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset(
-                        AppImages.arrowLeft,
-                        width: 23.w,
-                        height: 23.h,
-                      )),
-                ),
-                ListTile(
-                    onTap: (){},
-                    leading: SvgPicture.asset(
-                      AppImages.flesh,
+                child: Row(
+                  children: [
+                    SvgPicture.asset(
+                      AppImages.logOut,
                       width: 24.w,
                       height: 24.h,
                     ),
-                    title: Text(
-                      "Help & Feedback",
+                    Text(
+                      "Log out",
                       style: TextStyle(
-                        color: AppColors.white,
+                        color: Colors.red,
                         fontWeight: FontWeight.w400,
                         fontSize: 16.sp,
                       ),
-                    ),
-                    trailing: IconButton(
-                        onPressed: () {},
-                        icon: SvgPicture.asset(
-                          AppImages.arrowLeft,
-                          width: 23.w,
-                          height: 23.h,
-                        ))),
-                ListTile(
-                  onTap: (){},
-                  leading: SvgPicture.asset(
-                    AppImages.like,
-                    width: 24.w,
-                    height: 24.h,
-                  ),
-                  title: Text(
-                    "Support US",
-                    style: TextStyle(
-                      color: AppColors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16.sp,
-                    ),
-                  ),
-                  trailing: IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset(
-                        AppImages.arrowLeft,
-                        width: 23.w,
-                        height: 23.h,
-                      )),
+                    )
+                  ],
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 20.h, left: 12.w, bottom: 16.h),
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        AppImages.logOut,
-                        width: 24.w,
-                        height: 24.h,
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "Log out",
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16.sp,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           )
         ],
       ),

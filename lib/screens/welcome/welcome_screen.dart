@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:homework12/data/models/local/local_storage.dart';
 import 'package:homework12/screens/routes.dart';
 import 'package:homework12/utils/fonts/fonts.dart';
 
@@ -13,18 +14,15 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String name='';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.black,
       appBar: AppBar(
         backgroundColor:AppColors.black,
-        leading: IconButton(
-          onPressed: (){
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back_ios,color: AppColors.white,),
-        ),
       ),
       body: Padding(
         padding:EdgeInsets.symmetric(horizontal: 40.w,vertical: 62.h),
@@ -35,14 +33,59 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             color: AppColors.white.withOpacity(0.87),fontSize:32.sp
           ),),
             SizedBox(height: 26.h,),
-            Text('Please login to your account or create new account to continue',textAlign:TextAlign.center,style: AppTextStyle.interRegular.copyWith(
-              color: AppColors.white.withOpacity(0.67),fontSize:16.sp,
+            Text('Please enter your name and start',textAlign:TextAlign.center,style: AppTextStyle.interRegular.copyWith(
+              color: AppColors.white.withOpacity(0.87),fontSize:16.sp,
             ),),
+            SizedBox(height: 26.h,),
+            Form(
+              key: _formKey,
+              child: TextFormField(
+                onSaved: (v){
+                  setState(() {
+                    name=v!;
+                  });
+                },
+                validator: (value){
+                  if(value!.isEmpty){
+                    return "Please enter your name";
+                  }
+                  return null;
+                },
+                style: AppTextStyle.interMedium.copyWith(
+                  color: AppColors.white.withOpacity(0.9),fontSize:18.sp),
+                decoration:InputDecoration(
+                  hintText: 'Enter your name',
+                  hintStyle: AppTextStyle.interMedium.copyWith(
+                    color: AppColors.white.withOpacity(0.7),fontSize:16.sp
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16.r),
+                    borderSide: BorderSide(width: 1,color: AppColors.white.withOpacity(0.8))
+                  ),
+                  enabledBorder:OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16.r),
+                      borderSide: BorderSide(width: 1,color: AppColors.white.withOpacity(0.8))
+                  ),
+                  errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16.r),
+                      borderSide: BorderSide(width: 1,color: Colors.red)
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16.r),
+                      borderSide: BorderSide(width: 1,color: Colors.red)
+                  ),
+                ),
+              ),
+            ),
             const Spacer(),
             SizedBox(
               width:double.infinity,
               child: TextButton(onPressed:(){
+                if(_formKey.currentState!.validate()){
+                  _formKey.currentState!.save();
+                  StorageRepository.setString(key: 'name', value:name);
                 Navigator.pushReplacementNamed(context,RouteNames.tabBox);
+                }
               },
                   style: TextButton.styleFrom(
                     backgroundColor: AppColors.c_8E7CFF,

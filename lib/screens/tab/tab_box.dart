@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:homework12/screens/tab/profile/profile_screen.dart';
 import 'package:homework12/utils/color/color.dart';
@@ -15,16 +17,21 @@ class TabBox extends StatefulWidget {
 }
 
 class _TabBoxState extends State<TabBox> {
-
+  StreamController<bool> streamController=StreamController<bool>();
   List<Widget> screens = [const HomeScreen(), const CalendarScreen(),const ProfileScreen()];
 
   int activeIndex = 0;
-  List<TaskModels> tasks=[];
 
   _init() async{
-    tasks=await LocalDatabase.getAllTask();
-    screens = [const HomeScreen(), const CalendarScreen(),const ProfileScreen()];
+    screens = [HomeScreen(
+      stream: streamController.stream.asBroadcastStream(),
+    ), const CalendarScreen(),const ProfileScreen()];
     setState(() {});
+  }
+  @override
+  void initState() {
+    _init();
+    super.initState();
   }
 
   @override
@@ -63,8 +70,8 @@ class _TabBoxState extends State<TabBox> {
             addTaskDialog(context: context,
                 taskModelChanged:(task) async {
                   await LocalDatabase.insertTask(task);
-                  _init();
-                });
+                  streamController.add(true);
+            });
           },
           child:const Icon(Icons.add,color: AppColors.white,),
         )

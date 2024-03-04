@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:homework12/screens/tab/home/diologs/category_selec_diolog.dart';
 import 'package:homework12/screens/tab/home/diologs/priority_selec_diolog.dart';
 import 'package:homework12/screens/tab/home/diologs/widgets/task_text_field.dart';
-import 'package:homework12/utils/utilities.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../data/models/task/task_models.dart';
@@ -23,7 +22,7 @@ addTaskDialog({required BuildContext context,required ValueChanged<TaskModels> t
   DateTime? dateTime;
 
   int priority=0;
-  String category='';
+  int category=0;
   final FocusNode focusNode1=FocusNode();
   final FocusNode focusNode2=FocusNode();
 
@@ -69,6 +68,8 @@ addTaskDialog({required BuildContext context,required ValueChanged<TaskModels> t
                     children: [
                       IconButton(
                           onPressed: () async {
+                           focusNode1.unfocus();
+                           focusNode2.unfocus();
                             dateTime=await showDatePicker(
                                 context:context,
                                 barrierColor: AppColors.c_363636,
@@ -84,6 +85,8 @@ addTaskDialog({required BuildContext context,required ValueChanged<TaskModels> t
                           icon:Icon(Icons.calendar_month,color: AppColors.white,size:28.sp,)),
                       IconButton(
                           onPressed: () async{
+                            focusNode1.unfocus();
+                            focusNode2.unfocus();
                             timeOfDay=await showTimePicker(context: context,
                                 confirmText: 'Save',
                                 initialTime:const TimeOfDay(hour:8, minute:0),
@@ -102,12 +105,14 @@ addTaskDialog({required BuildContext context,required ValueChanged<TaskModels> t
                               width: 30.w, height: 30.h)),
                       IconButton(
                           onPressed: () {
+                            focusNode1.unfocus();
+                            focusNode2.unfocus();
                             showCategorySelectDialog(context: context,
                                 categorySelection: (selectedCategory){
                               setState((){
                                 category=selectedCategory;
                               });
-                                  taskModels=taskModels.copyWith(category: selectedCategory);
+                                  taskModels=taskModels.copyWith(categoryId: selectedCategory);
                                 },
                                 category:category);
                           },
@@ -115,6 +120,8 @@ addTaskDialog({required BuildContext context,required ValueChanged<TaskModels> t
                               width: 30.w, height: 30.h)),
                       IconButton(
                           onPressed: () {
+                            focusNode1.unfocus();
+                            focusNode2.unfocus();
                             showPrioritySelectDialog(
                                 p: taskModels.priority,
                                 context: context, priority: (p){
@@ -129,12 +136,28 @@ addTaskDialog({required BuildContext context,required ValueChanged<TaskModels> t
                       const Spacer(),
                       IconButton(
                           onPressed: () {
+                            focusNode1.unfocus();
+                            focusNode2.unfocus();
+
                             if(taskModels.canAddTaskToDatabase()) {
-                              showSuccessMessage("SUCCESS");
-                              taskModelChanged.call(taskModels);
                               Navigator.pop(context);
+                              taskModelChanged.call(taskModels);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                   SnackBar(
+                                      backgroundColor:Colors.green,
+                                      content:Text('Success',style: AppTextStyle.interMedium.copyWith(
+                                        color: AppColors.white,fontSize:16.sp
+                                      ),))
+                              );
                             } else {
-                              showErrorMessage("ERROR");
+                              Navigator.pop(context);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      backgroundColor:Colors.red,
+                                      content:Text('Error something is wrong',style: AppTextStyle.interMedium.copyWith(
+                                        color: AppColors.white,fontSize:16.sp
+                                      ),))
+                              );
                             }
                           },
                           icon: SvgPicture.asset(AppImages.send,
@@ -150,9 +173,6 @@ addTaskDialog({required BuildContext context,required ValueChanged<TaskModels> t
                      color: AppColors.white,fontSize: 20.sp
                    ),),
                   SizedBox(height:10.h,),
-                  Text(category,style: AppTextStyle.interBold.copyWith(
-                    color: AppColors.white,fontSize:20.sp
-                  ),)
                 ],
               ),
             ),

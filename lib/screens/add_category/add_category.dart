@@ -10,7 +10,10 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 
 class AddCategoryScreen extends StatefulWidget {
-  const AddCategoryScreen({super.key});
+
+  const AddCategoryScreen({super.key, this.onCategoryAdded});
+
+  final VoidCallback? onCategoryAdded;
   @override
   State<AddCategoryScreen> createState() => _AddCategoryScreenState();
 }
@@ -19,6 +22,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
   TextEditingController categoryController=TextEditingController();
   int activeColor=-1;
   int activeIcon=-1;
+  String categoryName="";
   _init() async{
     setState(() {});
   }
@@ -27,7 +31,6 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
     _init();
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +59,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
             ),
             controller: categoryController,
             onChanged: (v){
-              categoryModel=categoryModel.copyWith(title: v);
+              categoryName=v;
             },
             decoration: InputDecoration(
               hintText: 'Category name',
@@ -88,9 +91,6 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                   return ZoomTapAnimation(
                     onTap: (){
                       activeIcon=index;
-                      String icon='';
-                      icon=categories[index].iconPath.toString();
-                      categoryModel=categoryModel.copyWith(iconPath: icon.toString());
                       setState(() {});
                     },
                     child:Container(
@@ -129,8 +129,6 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                   TextButton(
                     onPressed: (){
                       activeColor=index;
-                      String color=categories[index].color;
-                      categoryModel=categoryModel.copyWith(color: color);
                       setState(() {});
                     },
                     style: TextButton.styleFrom(
@@ -169,10 +167,22 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
              SizedBox(width: 20.w,),
               Expanded(
                 child: TextButton(onPressed:()async{
-                if(categoryModel.canAddTaskToDatabase()){
-                  await LocalDatabase.insertCategory(categoryModel);
-                  _init();
-                  Navigator.pop(context);
+                if(categoryName.isNotEmpty && activeColor>-1 && activeIcon>-1){
+                  await LocalDatabase.insertCategory(CategoryModel(title: categoryName, iconPath:categories[activeIcon].iconPath, color:categories[activeColor].color));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Category saved!'))
+                  );
+                  await Future.delayed(const Duration(seconds: 1),(){
+                    Navigator.pop(context);
+                    if(widget.onCategoryAdded!=null){
+                      widget.onCategoryAdded!.call();
+                    }
+                  });
+                }
+                else{
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Something is error'))
+                  );
                 }
                 }, style: TextButton.styleFrom(
                         backgroundColor: AppColors.c_8E7CFF,
@@ -190,10 +200,8 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
           SizedBox(height:60.h,),
       ],),
     );
-
   }
 }
-
 extension ColorExtension on String {
   toColor() {
     var hexColor = this.replaceAll("#", "");

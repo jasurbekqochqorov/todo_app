@@ -91,7 +91,7 @@ showPrioritySelectDialog({
                 SizedBox(width: 15.w,),
                 Expanded(
                   child: TextButton(onPressed:(){
-                    priority.call(activeIndex);
+                    priority.call(activeIndex+1);
                     Navigator.pop(context);
                   },
                       style: TextButton.styleFrom(
