@@ -34,7 +34,7 @@ class PageItem extends StatelessWidget {
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.circular(56.r),
                       color: index == activeIndex
-                          ? AppColors.white
+                          ? AppColors.blue
                           : Colors.grey,
                     ),
                   ))
@@ -44,20 +44,14 @@ class PageItem extends StatelessWidget {
             pageDataModel.title,
             maxLines: 2,
             textAlign: TextAlign.center,
-            style: AppTextStyle.interBold.copyWith(
-              fontSize:32.sp,
-              color: AppColors.white.withOpacity(0.87),
+            style: Theme.of(context).textTheme.headlineLarge,
             ),
-          ),
           SizedBox(height: 16.h),
           Text(
             pageDataModel.subtitle,
             maxLines: 3,
             textAlign: TextAlign.center,
-            style: AppTextStyle.interRegular.copyWith(
-              fontSize: 16.sp,
-              color: AppColors.white.withOpacity(0.87),
-            ),
+            style:Theme.of(context).textTheme.titleMedium
           ),
           SizedBox(height:30.h,)
         ],

@@ -47,15 +47,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.black,
       appBar: AppBar(
-        backgroundColor: AppColors.black,
         leading: IconButton(onPressed: (){},
         highlightColor: AppColors.blue,
-        icon: SvgPicture.asset(AppImages.menu,width: 24.w,height: 24.h,),),
-        title: Text('Index',style: AppTextStyle.interRegular.copyWith(
-          color: AppColors.white.withOpacity(0.87),fontSize:20.sp
-        ),),
+        icon: SvgPicture.asset(AppImages.menu,width: 24.w,height: 24.h,),style:IconButton.styleFrom(),),
+        title: Text('Index',style: Theme.of(context).textTheme.titleLarge),
         actions: [
           Image.asset(AppImages.person,width: 42.w,height: 42.h,),
           SizedBox(width:24.w,)
@@ -67,13 +63,10 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
           Image.asset(AppImages.picture,width: 227.2,height: 227.h,),
-            Text('What do you want to do today?',style: AppTextStyle.interSemiBold.copyWith(
-              color: AppColors.white,fontSize: 20.sp
-            ),),
+            Text('What do you want to do today?',style: Theme.of(context).textTheme.titleLarge
+            ),
             SizedBox(height: 10.h,),
-            Text('Tap + to add your tasks',style: AppTextStyle.interRegular.copyWith(
-              color: AppColors.white.withOpacity(0.87),fontSize: 16.sp
-            ),)
+            Text('Tap + to add your tasks',style: Theme.of(context).textTheme.titleMedium)
         ],),
       ):RefreshIndicator(
         color: AppColors.white,

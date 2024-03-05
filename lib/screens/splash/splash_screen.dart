@@ -50,17 +50,16 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     width=MediaQuery.of(context).size.width;
     height=MediaQuery.of(context).size.height;
-
     return Scaffold(
-      backgroundColor: AppColors.black,
       body: Center(child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
         SvgPicture.asset(AppImages.check,width: 113.w,height: 113.h,),
         SizedBox(height: 35.h,),
-        Text('UpTodo',style: AppTextStyle.interBold.copyWith(
-          color:AppColors.white,fontSize: 40.sp
-        ),)
+        Text('UpTodo',style:Theme.of(context).textTheme.titleLarge!.copyWith(
+          fontSize: 40.sp
+        )
+        )
       ],),),
     );
   }

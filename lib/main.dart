@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:homework12/screens/routes.dart';
 import 'package:homework12/utils/color/color.dart';
+import 'package:homework12/utils/theme/theme.dart';
 
 import 'data/models/local/local_storage.dart';
 
@@ -29,9 +30,9 @@ class _MyAppState extends State<MyApp> {
       designSize:const Size(375,812),
       builder: (context,child){
         return MaterialApp(
-          theme:ThemeData(
-            scaffoldBackgroundColor: AppColors.black,
-          ),
+          theme:AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: ThemeMode.system,
           initialRoute:RouteNames.splashScreen,
           onGenerateRoute: AppRoutes.generateRoute,
           debugShowCheckedModeBanner: false,

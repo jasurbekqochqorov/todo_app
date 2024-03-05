@@ -20,22 +20,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.black,
       appBar: AppBar(
-        backgroundColor:AppColors.black,
       ),
       body: Padding(
         padding:EdgeInsets.symmetric(horizontal: 40.w,vertical: 62.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-          Text('Welcome to UpTodo',style: AppTextStyle.interBold.copyWith(
-            color: AppColors.white.withOpacity(0.87),fontSize:32.sp
-          ),),
+          Text('Welcome to UpTodo',style:Theme.of(context).textTheme.headlineLarge,),
             SizedBox(height: 26.h,),
-            Text('Please enter your name and start',textAlign:TextAlign.center,style: AppTextStyle.interRegular.copyWith(
-              color: AppColors.white.withOpacity(0.87),fontSize:16.sp,
-            ),),
+            Text('Please enter your name and start',textAlign:TextAlign.center,style:Theme.of(context).textTheme.titleMedium
+            ),
             SizedBox(height: 26.h,),
             Form(
               key: _formKey,
@@ -51,20 +46,19 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   }
                   return null;
                 },
-                style: AppTextStyle.interMedium.copyWith(
-                  color: AppColors.white.withOpacity(0.9),fontSize:18.sp),
+                style:Theme.of(context).textTheme.titleMedium!.copyWith(
+                  fontSize: 18.sp
+                ),
                 decoration:InputDecoration(
                   hintText: 'Enter your name',
-                  hintStyle: AppTextStyle.interMedium.copyWith(
-                    color: AppColors.white.withOpacity(0.7),fontSize:16.sp
-                  ),
+                  hintStyle:Theme.of(context).textTheme.titleMedium,
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16.r),
-                    borderSide: BorderSide(width: 1,color: AppColors.white.withOpacity(0.8))
+                    borderSide: BorderSide(width: 1,color: AppColors.blue.withOpacity(0.8))
                   ),
                   enabledBorder:OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.r),
-                      borderSide: BorderSide(width: 1,color: AppColors.white.withOpacity(0.8))
+                      borderSide: BorderSide(width: 1,color: AppColors.blue.withOpacity(0.8))
                   ),
                   errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.r),
@@ -94,9 +88,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       borderRadius: BorderRadius.circular(4.r),
                     )
                   ),
-                  child:Text('START',style: AppTextStyle.interRegular.copyWith(
-                color: AppColors.white,fontSize: 16.sp
-              ),)),
+                  child:Text('START',style:Theme.of(context).textTheme.titleMedium)),
             ),
             SizedBox(height: 48.h,),
         ],),

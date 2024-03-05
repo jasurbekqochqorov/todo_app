@@ -39,10 +39,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.c_121212,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: AppColors.c_121212,
         centerTitle: true,
         title: Text(
           "Profile",
@@ -57,17 +55,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.person_pin,color: AppColors.white,size:100.sp,),
+              Icon(Icons.person_pin,color: AppColors.blue,size:100.sp,),
               SizedBox(
                 height: 10.h,
               ),
               Text(
                 StorageRepository.getString(key: 'name'),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 20.sp,
-                ),
+                style:Theme.of(context).textTheme.titleMedium!.copyWith(
+                  fontSize:20.sp
+                )
               ),
               SizedBox(
                 height: 30.h,
@@ -80,17 +76,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     width: 154,
                     height: 58,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF363636),
+                      color:AppColors.blue,
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Center(
                       child: Text(
                         "${left.length} Task left",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16.sp,
-                        ),
+                        style:Theme.of(context).textTheme.titleMedium,
                       ),
                     ),
                   )),
@@ -99,17 +91,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     width: 154,
                     height: 58,
                     decoration: BoxDecoration(
-                      color: Color(0xFF363636),
+                      color: AppColors.blue,
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Center(
                       child: Text(
                         "${done.length} Task done",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16.sp,
-                        ),
+                        style:Theme.of(context).textTheme.titleMedium
                       ),
                     ),
                   ))
@@ -121,11 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             padding: EdgeInsets.only(top: 32.h, left: 20.w, bottom: 16.h),
             child: Text(
               "Settings",
-              style: TextStyle(
-                color: const Color(0xFFAFAFAF),
-                fontWeight: FontWeight.w400,
-                fontSize: 14.sp,
-              ),
+              style: Theme.of(context).textTheme.titleSmall,
             ),
           ),
           Column(
@@ -138,11 +122,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: EdgeInsets.only(top: 20.h, left: 20.w, bottom: 16.h),
                 child: Text(
                   "Account",
-                  style: TextStyle(
-                    color: Color(0xFFAFAFAF),
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14.sp,
-                  ),
+                  style:Theme.of(context).textTheme.titleSmall
                 ),
               ),
               ListTileWidget(icon: AppImages.user, title: "Change account name",
@@ -154,12 +134,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         TextField(
                           controller: nameController,
-                          style: AppTextStyle.interMedium.copyWith(
-                              color: AppColors.black.withOpacity(0.9),fontSize:18.sp),
+                          style:AppTextStyle.interMedium.copyWith(
+                            color: AppColors.black,fontSize:16.sp,),
                           decoration: InputDecoration(
                             hintText: 'Enter your name',
-                            hintStyle: AppTextStyle.interMedium.copyWith(
-                                color: AppColors.black.withOpacity(0.7),fontSize:16.sp
+                            hintStyle:AppTextStyle.interMedium.copyWith(
+                              color: AppColors.black,fontSize: 16.sp
                             ),
                             focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(16.r),
@@ -189,11 +169,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: EdgeInsets.only(top: 20.h, left: 20.w, bottom: 16.h),
                 child: Text(
                   "Up todo",
-                  style: TextStyle(
-                    color:const Color(0xFFAFAFAF),
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14.sp,
-                  ),
+                  style:Theme.of(context).textTheme.titleSmall
                 ),
               ),
               ListTileWidget(icon: AppImages.aboutUs, title:'About us',onTap: (){},),
@@ -210,7 +186,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       height: 24.h,
                     ),
                     Text(
-                      "Log out",
+                      " Log out",
                       style: TextStyle(
                         color: Colors.red,
                         fontWeight: FontWeight.w400,

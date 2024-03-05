@@ -36,9 +36,7 @@ class BoardingBottomView extends StatelessWidget {
                 onPressed: onBackTap,
                 child: Text(
                   "BACK",
-                  style: AppTextStyle.interRegular.copyWith(
-                      fontSize: 16.sp,
-                      color: AppColors.white.withOpacity(0.45)),
+                  style:Theme.of(context).textTheme.titleMedium
                 ),
               ),
               (activeIndex != pagesData.length - 1)
@@ -52,10 +50,7 @@ class BoardingBottomView extends StatelessWidget {
                           backgroundColor: AppColors.c_8875FF),
                       child: Text(
                         "NEXT",
-                        style: AppTextStyle.interBold.copyWith(
-                          fontSize: 16.sp,
-                          color: AppColors.white,
-                        ),
+                        style: Theme.of(context).textTheme.titleMedium,
                       ))
                   : TextButton(
                       onPressed: onGetStartTap,
@@ -67,10 +62,7 @@ class BoardingBottomView extends StatelessWidget {
                           backgroundColor: AppColors.c_8875FF),
                       child: Text(
                         "GET STARTED",
-                        style: AppTextStyle.interBold.copyWith(
-                          fontSize: 16.sp,
-                          color: AppColors.white,
-                        ),
+                        style:Theme.of(context).textTheme.titleMedium
                       ))
             ],
           )

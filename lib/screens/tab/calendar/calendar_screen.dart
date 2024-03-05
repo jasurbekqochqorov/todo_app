@@ -16,14 +16,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.black,
-        title: Text('Calendar',style: AppTextStyle.interSemiBold.copyWith(
-          color: AppColors.white,fontSize:20.sp,
+        title: Text('Calendar',style:Theme.of(context).textTheme.titleMedium!.copyWith(
+         fontSize: 20.sp
         ),),
         centerTitle: true,
       ),
       body: const Column(children: [
-
       ],),
     );
   }

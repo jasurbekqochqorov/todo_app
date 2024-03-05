@@ -36,12 +36,12 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: AppColors.black,
+        centerTitle: true,
         automaticallyImplyLeading: false,
-        title: Text('Create new category',style: AppTextStyle.interRegular.copyWith(
-          color: AppColors.white,fontSize: 20.sp
-        ),),
-      ),
+        title: Text('Create new category',style: Theme.of(context).textTheme.titleMedium!.copyWith(
+      fontSize: 20.sp
+    ),
+      ),),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -49,13 +49,11 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          Text('Category name :',style: AppTextStyle.interRegular.copyWith(
-            color: AppColors.white,fontSize:16.sp
-          ),),
+          Text('Category name :',style: Theme.of(context).textTheme.titleMedium),
           SizedBox(height:16.h,),
           TextField(
-            style: AppTextStyle.interRegular.copyWith(
-              color: AppColors.white,fontSize:20.sp
+            style:Theme.of(context).textTheme.titleMedium!.copyWith(
+              fontSize: 20.sp
             ),
             controller: categoryController,
             onChanged: (v){
@@ -63,9 +61,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
             },
             decoration: InputDecoration(
               hintText: 'Category name',
-              hintStyle: AppTextStyle.interRegular.copyWith(
-                color: AppColors.white,fontSize:16.sp
-              ),
+              hintStyle: Theme.of(context).textTheme.titleMedium,
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(width: 1.sp,color: AppColors.c_979797),
                 borderRadius: BorderRadius.circular(4.r)
@@ -77,9 +73,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
             ),
           ),
           SizedBox(height: 20.h,),
-          Text('Category icon:',style: AppTextStyle.interRegular.copyWith(
-            color: AppColors.white,fontSize:16.sp
-          ),),
+          Text('Category icon:',style: Theme.of(context).textTheme.titleMedium),
         ],),),
           SizedBox(
             height:75.h,
@@ -96,7 +90,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                     child:Container(
                       margin: EdgeInsets.symmetric(horizontal:8.w),
                       decoration: BoxDecoration(
-                      color: AppColors.white,
+                      color: AppColors.c_FFC000,
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       padding: EdgeInsets.symmetric(horizontal:20.w,vertical:10.h),
@@ -113,9 +107,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
           SizedBox(height:20.h,),
           Padding(
             padding: EdgeInsets.symmetric(horizontal:20.w),
-            child: Text('Category color:',style: AppTextStyle.interRegular.copyWith(
-                color: AppColors.white,fontSize:16.sp
-            ),),
+            child: Text('Category color:',style: Theme.of(context).textTheme.titleMedium),
           ),
           SizedBox(height:20.h,),
         SizedBox(
@@ -160,9 +152,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                             borderRadius: BorderRadius.circular(4.r)
                         )
                     ),
-                    child:Text("Cancel",style: AppTextStyle.interRegular.copyWith(
-                        fontSize: 16.sp,color: AppColors.white
-                    ),)),
+                    child:Text("Cancel",style:Theme.of(context).textTheme.titleMedium,)),
               ),
              SizedBox(width: 20.w,),
               Expanded(
@@ -191,9 +181,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                             borderRadius: BorderRadius.circular(4.r)
                         )
                     ),
-                    child:Text("Create category",style: AppTextStyle.interRegular.copyWith(
-                        fontSize: 16.sp,color: AppColors.white
-                    ),)),
+                    child:Text("Create category",style: Theme.of(context).textTheme.titleMedium)),
               )
             ],),
           ),

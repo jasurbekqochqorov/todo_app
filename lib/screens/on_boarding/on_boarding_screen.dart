@@ -50,7 +50,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         statusBarBrightness: Brightness.light,
       ),
       child: Scaffold(
-        backgroundColor: AppColors.black,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -63,9 +62,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   StorageRepository.setBool(key: 'bool', value:true);
                   Navigator.pushNamed(context,RouteNames.welcomeScreen);
                 },
-                child: Text('SKIP',style: AppTextStyle.interRegular.copyWith(
-                  color: AppColors.white.withOpacity(0.44),fontSize: 16.sp
-                ),),
+                child: Text('SKIP',style: Theme.of(context).textTheme.titleMedium),
               ),
             ),
             Expanded(
