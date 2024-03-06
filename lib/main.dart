@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:homework12/screens/routes.dart';
@@ -29,13 +30,19 @@ class _MyAppState extends State<MyApp> {
     return ScreenUtilInit(
       designSize:const Size(375,812),
       builder: (context,child){
-        return MaterialApp(
-          theme:AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
-          themeMode: ThemeMode.system,
-          initialRoute:RouteNames.splashScreen,
-          onGenerateRoute: AppRoutes.generateRoute,
-          debugShowCheckedModeBanner: false,
+        return AdaptiveTheme(
+          light: AppTheme.lightTheme,
+          dark: AppTheme.darkTheme,
+          initial: AdaptiveThemeMode.system,
+          builder:(theme,darkTheme) {
+            return MaterialApp(
+                theme:theme,
+            darkTheme: darkTheme,
+            initialRoute:RouteNames.splashScreen,
+            onGenerateRoute: AppRoutes.generateRoute,
+            debugShowCheckedModeBanner: false,
+          );
+      }
         );
       },
     );

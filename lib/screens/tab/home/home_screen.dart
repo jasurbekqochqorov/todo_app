@@ -1,7 +1,9 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:homework12/data/models/local/local_database.dart';
+import 'package:homework12/data/models/local/local_storage.dart';
 import 'package:homework12/data/models/task/task_models.dart';
 import 'package:homework12/screens/tab/home/diologs/update_task_diolog.dart';
 import 'package:homework12/screens/tab/home/diologs/widgets/task_item_view.dart';
@@ -24,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<TaskModels> tasks=[];
   List<TaskModels> tasks2=[];
   int k=0;
+  bool isDark=false;
 
   _init() async{
     tasks=await LocalDatabase.getAllTask();
@@ -33,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   _searchQuery(String q)async{
     k=1;
     tasks=await LocalDatabase.searchTasks(q);
+    isDark= await AdaptiveTheme.getThemeMode()==AdaptiveThemeMode.dark;
     setState(() {});
   }
 
@@ -53,7 +57,17 @@ class _HomeScreenState extends State<HomeScreen> {
         icon: SvgPicture.asset(AppImages.menu,width: 24.w,height: 24.h,),style:IconButton.styleFrom(),),
         title: Text('Index',style: Theme.of(context).textTheme.titleLarge),
         actions: [
-          Image.asset(AppImages.person,width: 42.w,height: 42.h,),
+          Switch(
+              value:isDark,
+              onChanged:(v)async{
+                if(v){
+                  AdaptiveTheme.of(context).setDark();
+                }
+                else{
+                  AdaptiveTheme.of(context).setLight();
+                }
+                isDark=v;
+              }),
           SizedBox(width:24.w,)
         ],
         centerTitle: true,
