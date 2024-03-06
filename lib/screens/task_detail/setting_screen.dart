@@ -32,13 +32,10 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Setting',style: AppTextStyle.interMedium.copyWith(
-          color: AppColors.white,fontSize: 26.sp
-        ),),
+        title: Text('Setting',style:Theme.of(context).textTheme.headlineMedium),
         leading: IconButton(onPressed: (){
           Navigator.pop(context);
         },icon: const Icon(Icons.arrow_back_ios,color: AppColors.white,),),
-        backgroundColor: AppColors.black,
         centerTitle: true,
       ),
       body: Column(children: [
@@ -77,13 +74,12 @@ class _SettingScreenState extends State<SettingScreen> {
                     ),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(4.r),
-                        color: (category[index].id==selectedCategoryId)?AppColors.white:ColorExtension(category[index].color).toColor()
+                        color:ColorExtension(category[index].color).toColor()
                     ),
-                    child:SvgPicture.asset(category[index].iconPath,width:32.h,height:32.h.h,),
+                    child:SvgPicture.asset(category[index].iconPath,width:32.h,height:32.h,),
                   ),
-                  Text(category[index].title,style: AppTextStyle.interRegular.copyWith(
-                      color: AppColors.white.withOpacity(0.87),fontSize:14.sp
-                  ),)
+                  Text(category[index].title,style:(category[index].id==selectedCategoryId)?AppTextStyle.interRegular
+                      .copyWith(color: AppColors.blue,fontSize:16.sp):Theme.of(context).textTheme.titleMedium,)
                 ],
               ),
             );
@@ -106,9 +102,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       borderRadius: BorderRadius.circular(4.r)
                   )
               ),
-              child:Text("Add category",style: AppTextStyle.interRegular.copyWith(
-                  fontSize: 16.sp,color: AppColors.white
-              ),)),
+              child:Text("Add category",style:Theme.of(context).textTheme.titleMedium )),
         ),
         SizedBox(
           height: 30.h,

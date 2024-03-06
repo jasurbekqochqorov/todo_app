@@ -15,8 +15,9 @@ class AppTheme{
           statusBarColor: AppColors.white,
         )
     ),
+    // useMaterial3: true,
     colorScheme: const ColorScheme(
-      brightness: Brightness.light,
+      brightness: Brightness.dark,
       primary: Color(0xFF0056D2),
       onPrimary: Color(0xFFFFFFFF),
       primaryContainer: Color(0xFFDAE2FF),
@@ -47,13 +48,13 @@ class AppTheme{
       surfaceTint: Color(0xFF0056D2),
       outlineVariant: Color(0xFFC5C6D0),
       scrim: Color(0xFF000000),
-    ),
     // useMaterial3: true,
-    iconButtonTheme: IconButtonThemeData(
-      style: IconButton.styleFrom(
-        backgroundColor: AppColors.black
-      )
     ),
+    // iconButtonTheme: IconButtonThemeData(
+    //   style: IconButton.styleFrom(
+    //     backgroundColor: AppColors.black
+    //   )
+    // ),
     textTheme:TextTheme(
         displayLarge:TextStyle(
           fontSize: 57.sp,
@@ -154,9 +155,15 @@ class AppTheme{
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarIconBrightness: Brightness.dark,
         statusBarBrightness: Brightness.light,
-        statusBarColor: AppColors.white,
+        statusBarColor: AppColors.black,
       )
     ),
+    iconButtonTheme: IconButtonThemeData(
+        style: IconButton.styleFrom(
+            backgroundColor: AppColors.white
+        )
+    ),
+    // useMaterial3: true,
     colorScheme: const ColorScheme(
       brightness: Brightness.light,
       primary: Color(0xFF0056D2),

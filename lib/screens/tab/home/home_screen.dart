@@ -52,9 +52,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: (){},
-        highlightColor: AppColors.blue,
-        icon: SvgPicture.asset(AppImages.menu,width: 24.w,height: 24.h,),style:IconButton.styleFrom(),),
         title: Text('Index',style: Theme.of(context).textTheme.titleLarge),
         actions: [
           Switch(
@@ -67,6 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   AdaptiveTheme.of(context).setLight();
                 }
                 isDark=v;
+                setState(() {});
               }),
           SizedBox(width:24.w,)
         ],
@@ -94,33 +92,30 @@ class _HomeScreenState extends State<HomeScreen> {
               padding:EdgeInsets.symmetric(horizontal:24.w,vertical:20.h),
               child: TextField(
                 onChanged: _searchQuery,
-                style: AppTextStyle.interSemiBold.copyWith(
-                  color:
-                    AppColors.white,fontSize:16.sp
-                ),
+                style:Theme.of(context).textTheme.titleMedium,
                 decoration:InputDecoration(
                   prefixIcon: const Icon(Icons.search,color: AppColors.c_979797,),
                   hintText: "Search for your task...",
                   hintStyle: AppTextStyle.interRegular.copyWith(
                     color: AppColors.c_AFAFAF,fontSize:16.sp
                   ),
-                  fillColor: AppColors.c_363636,
+                  fillColor:(isDark)?AppColors.c_363636:AppColors.white,
                     filled: true,
                   contentPadding: EdgeInsets.symmetric(horizontal:13.w,vertical:12.h),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4.r),
-                    borderSide: const BorderSide(width:1,color: AppColors.white)
+                    borderSide:BorderSide(width:1,color:(isDark)?AppColors.white:AppColors.black.withOpacity(0.5))
                   ),
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(4.r),
-                      borderSide:const  BorderSide(width:1,color: AppColors.white)
+                      borderSide:BorderSide(width:1,color:(isDark)?AppColors.white:AppColors.black.withOpacity(0.5))
                   ),
                 ),
               ),
             ),
             Expanded(
               child: ListView(children:List.generate(tasks.length, (index){
-                return TaskItemView(taskModel: tasks[index],
+                return TaskItemView(taskModel: tasks[index],isDark:isDark,
                     onDelete: ()async{
                       showDialog(context: context, builder: (context){
                         return AlertDialog(

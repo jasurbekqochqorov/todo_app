@@ -82,7 +82,7 @@ addTaskDialog({required BuildContext context,required ValueChanged<TaskModels> t
                               });
                             }
                           },
-                          icon:Icon(Icons.calendar_month,color: AppColors.white,size:28.sp,)),
+                          icon:Icon(Icons.calendar_month,color: AppColors.blue,size:28.sp,)),
                       IconButton(
                           onPressed: () async{
                             focusNode1.unfocus();
@@ -102,7 +102,7 @@ addTaskDialog({required BuildContext context,required ValueChanged<TaskModels> t
                             }
                             },
                           icon: SvgPicture.asset(AppImages.watch,
-                              width: 30.w, height: 30.h)),
+                              width: 30.w, height: 30.h,colorFilter:ColorFilter.mode(AppColors.blue,BlendMode.srcIn))),
                       IconButton(
                           onPressed: () {
                             focusNode1.unfocus();
@@ -117,7 +117,7 @@ addTaskDialog({required BuildContext context,required ValueChanged<TaskModels> t
                                 category:category);
                           },
                           icon: SvgPicture.asset(AppImages.tag,
-                              width: 30.w, height: 30.h)),
+                              width: 30.w, height: 30.h,colorFilter:ColorFilter.mode(AppColors.blue,BlendMode.srcIn))),
                       IconButton(
                           onPressed: () {
                             focusNode1.unfocus();
@@ -132,7 +132,7 @@ addTaskDialog({required BuildContext context,required ValueChanged<TaskModels> t
                             });
                           },
                           icon: SvgPicture.asset(AppImages.flag,
-                              width: 30.w, height: 30.h)),
+                              width: 30.w, height: 30.h,colorFilter:ColorFilter.mode(AppColors.blue,BlendMode.srcIn),)),
                       const Spacer(),
                       IconButton(
                           onPressed: () {

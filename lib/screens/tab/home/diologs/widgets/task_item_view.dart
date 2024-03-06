@@ -10,15 +10,15 @@ import '../../../../../utils/fonts/fonts.dart';
 
 class TaskItemView extends StatefulWidget {
   const TaskItemView(
-      {super.key, required this.taskModel, required this.onDelete, required this.onUpdate});
+      {super.key, required this.taskModel, required this.onDelete, required this.onUpdate, required this.isDark});
 
   final TaskModels taskModel;
   final VoidCallback onDelete;
   final VoidCallback onUpdate;
+  final bool isDark;
   @override
   State<TaskItemView> createState() => _TaskItemViewState();
 }
-
 
 class _TaskItemViewState extends State<TaskItemView> {
   bool isCheck=false;
@@ -31,36 +31,26 @@ class _TaskItemViewState extends State<TaskItemView> {
       // height:20,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16.r),
-        color: AppColors.c_363636,
+        color:(widget.isDark)?AppColors.c_363636:AppColors.white,
+        border: Border.all(width:1,color: (widget.isDark)?AppColors.c_363636:AppColors.blue)
       ),
-      child: Column(children: [
+      child: Column(children:[
         Row(children: [
-          Text(widget.taskModel.title, style: AppTextStyle.interBold.copyWith(
-              color: AppColors.white, fontSize: 20.sp
-          ),),
+          Text(widget.taskModel.title, style:Theme.of(context).textTheme.titleMedium!.copyWith(
+            fontSize:20.sp
+          )),
           const Spacer(),
           IconButton(
               onPressed: widget.onDelete,
               icon: const Icon(Icons.delete, color: Colors.red,)),
           IconButton(onPressed: widget.onUpdate,
               icon: const Icon(Icons.edit, color: Colors.green,)),
-          // Checkbox(value:isCheck, onChanged:(v){
-          //   isCheck=v!;
-          //   if(isCheck==true){
-          //     task=task.copyWith(status:TaskStatus.done);
-          //   }
-          //   else{
-          //     task=task.copyWith(status: TaskStatus.missed);
-          //   }
-          //   setState((){});
-          // }),
         ],),
+        SizedBox(height:5.h,),
         Row(children: [
           Text('Today at:${widget.taskModel.deadline.hour.hour()}:${widget
               .taskModel.deadline.minute.minute()}',
-            style: AppTextStyle.interRegular.copyWith(
-                color: AppColors.white, fontSize: 14.sp
-            ),),
+            style:Theme.of(context).textTheme.titleSmall),
           const Spacer(),
           FutureBuilder<CategoryModel>(
               future: LocalDatabase.getCategoryById(
@@ -79,9 +69,7 @@ class _TaskItemViewState extends State<TaskItemView> {
                         SvgPicture.asset(category.iconPath, width: 15.w, height: 15.h,),
                         SizedBox(width: 5.w,),
                         Text(category.title,
-                          style: AppTextStyle.interRegular.copyWith(
-                              color: AppColors.white, fontSize: 12.sp
-                          ),),
+                          style:Theme.of(context).textTheme.labelMedium),
                       ],
                     ),
                   );
@@ -94,16 +82,14 @@ class _TaskItemViewState extends State<TaskItemView> {
               padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4.r),
-                  color: AppColors.c_363636,
+                  // color: AppColors.c_363636,
                   border: Border.all(width: 2.sp, color: AppColors.c_809CFF)
               ),
               child: Row(children: [
-                Icon(Icons.flag_outlined, color: AppColors.white, size: 20.sp,),
+                Icon(Icons.flag_outlined, color: (widget.isDark)?AppColors.white:AppColors.black, size: 20.sp,),
                 SizedBox(width: 5.w,),
                 Text(widget.taskModel.priority.toString(),
-                  style: AppTextStyle.interRegular.copyWith(
-                      color: AppColors.white, fontSize: 15.sp
-                  ),),
+                  style:Theme.of(context).textTheme.titleSmall),
               ],)
           )
         ],)
