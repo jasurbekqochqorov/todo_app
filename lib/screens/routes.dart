@@ -59,3 +59,6 @@ class RouteNames{
   static const String addCategory='/four_route';
   static const String settings='/five_route';
 }
+
+//initialRoute:RouteNames.splashScreen,
+//             onGenerateRoute: AppRoutes.generateRoute,

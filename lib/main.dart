@@ -2,9 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:homework12/screens/routes.dart';
-import 'package:homework12/utils/color/color.dart';
 import 'package:homework12/utils/theme/theme.dart';
-
 import 'data/models/local/local_storage.dart';
 
 

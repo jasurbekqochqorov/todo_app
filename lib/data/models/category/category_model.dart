@@ -4,9 +4,6 @@ import 'dart:ui';
 
 import 'package:homework12/data/models/category/category_model_constants.dart';
 import 'package:homework12/data/models/task/task_model_constants.dart';
-import 'package:homework12/utils/color/color.dart';
-
-import '../task/task_models.dart';
 
 class CategoryModel {
   final int? id;
